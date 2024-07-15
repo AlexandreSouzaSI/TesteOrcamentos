@@ -14,9 +14,10 @@ import { UserPayload } from 'src/infra/auth/jwt.strategy'
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 
 const editRendaBodySchema = z.object({
-  name: z.string(),
-  data: z.date().optional(),
-  valor: z.coerce.number(),
+  name: z.string().optional(),
+  data: z.string().optional(),
+  valor: z.coerce.number().optional(),
+  status: z.string().optional(),
 })
 
 const bodyValidationPipe = new ZodValidationPipe(editRendaBodySchema)
@@ -34,13 +35,14 @@ export class EditRendaController {
     @Param('rendaId') rendaId: string,
     @CurrentUser() user: UserPayload,
   ) {
-    const { name, valor, data } = body
+    const { name, valor, data, status } = body
     const userValidate = user.sub
 
     const result = await this.editRenda.execute({
       name,
       valor,
       data,
+      status,
       rendaId,
       userId: new UniqueEntityId(userValidate),
     })

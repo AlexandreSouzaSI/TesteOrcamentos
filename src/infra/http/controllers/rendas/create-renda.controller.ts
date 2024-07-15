@@ -14,8 +14,9 @@ import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 
 const createRendaBodySchema = z.object({
   name: z.string(),
-  data: z.date().optional(),
+  data: z.string().optional(),
   valor: z.coerce.number(),
+  status: z.string(),
 })
 
 const bodyValidationPipe = new ZodValidationPipe(createRendaBodySchema)
@@ -32,13 +33,14 @@ export class CreateRendaController {
     @Body(bodyValidationPipe) body: CreateRendaBodySchema,
     @CurrentUser() user: UserPayload,
   ) {
-    const { name, valor, data } = body
+    const { name, valor, data, status } = body
     const userValidate = user.sub
 
     const result = await this.createRenda.execute({
       userId: new UniqueEntityId(userValidate),
       name,
       valor,
+      status,
       data,
     })
 

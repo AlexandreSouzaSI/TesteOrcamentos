@@ -41,7 +41,7 @@ describe('Fetch accounts (E2E)', () => {
 
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual({
-      renda: expect.objectContaining({ name: 'Alexandre Teste' }),
+      user: expect.objectContaining({ name: 'Alexandre Teste' }),
     })
   })
 })

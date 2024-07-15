@@ -8,9 +8,10 @@ import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 
 interface EditRendaUseCaseRequest {
   rendaId: string
-  name: string
-  data?: Date | null
-  valor: number
+  name?: string
+  data?: string | null
+  valor?: number
+  status?: string
   userId: UniqueEntityId
 }
 
@@ -29,6 +30,7 @@ export class EditRendaUseCase {
     name,
     valor,
     data,
+    status,
     rendaId,
   }: EditRendaUseCaseRequest): Promise<EditRensaUseCaseResponse> {
     const renda = await this.rendaRepository.findById(rendaId)
@@ -37,8 +39,18 @@ export class EditRendaUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    renda.name = name
-    renda.valor = valor
+    if (name) {
+      renda.name = name
+    }
+
+    if (valor) {
+      renda.valor = valor
+    }
+
+    if (status) {
+      renda.status = status
+    }
+
     renda.data = data ?? null
 
     await this.rendaRepository.save(renda)

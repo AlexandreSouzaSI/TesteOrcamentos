@@ -1,3 +1,4 @@
+import { CountRendaUseCase } from './../../domain/use-cases/rendas/renda-count-use-case'
 import { Module } from '@nestjs/common'
 import { CreateAccountController } from './controllers/users/create-account.controller'
 import { AuthenticateController } from './controllers/authenticate.controller'
@@ -32,6 +33,10 @@ import { EditRendaUseCase } from 'src/domain/use-cases/rendas/renda-edit-use-cas
 import { DeleteRendaUseCase } from 'src/domain/use-cases/rendas/renda-delete-use-case'
 import { FetchRendaUseCase } from 'src/domain/use-cases/rendas/renda-fetch-use-case'
 import { FetchRecentRendaUseCase } from 'src/domain/use-cases/rendas/renda-fetch-recent-use-case'
+import { AuthController } from './controllers/logout.controller'
+import { CountDespesaUseCase } from 'src/domain/use-cases/despesas/despesa-count-use-case'
+import { SumRendaUseCase } from 'src/domain/use-cases/rendas/renda-sum-values-use-case'
+import { SumDespesaUseCase } from 'src/domain/use-cases/despesas/despesa-sum-values-use-case'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -51,6 +56,7 @@ import { FetchRecentRendaUseCase } from 'src/domain/use-cases/rendas/renda-fetch
     DeleteRendaController,
     FetchRendaController,
     FetchRecentRendaController,
+    AuthController,
   ],
   providers: [
     PrismaClient,
@@ -69,6 +75,10 @@ import { FetchRecentRendaUseCase } from 'src/domain/use-cases/rendas/renda-fetch
     DeleteRendaUseCase,
     FetchRendaUseCase,
     FetchRecentRendaUseCase,
+    CountRendaUseCase,
+    CountDespesaUseCase,
+    SumRendaUseCase,
+    SumDespesaUseCase,
   ],
 })
 export class HttpModule {}

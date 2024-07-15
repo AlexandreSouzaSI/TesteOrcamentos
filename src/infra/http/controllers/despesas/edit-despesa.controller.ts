@@ -14,10 +14,11 @@ import { UserPayload } from 'src/infra/auth/jwt.strategy'
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 
 const editDespesasBodySchema = z.object({
-  name: z.string(),
-  data: z.date().optional(),
-  valor: z.number(),
-  dataVencimento: z.date().optional(),
+  name: z.string().optional(),
+  data: z.string().optional(),
+  valor: z.number().optional(),
+  dataVencimento: z.string().optional(),
+  status: z.string().optional(),
 })
 
 const bodyValidationPipe = new ZodValidationPipe(editDespesasBodySchema)
@@ -35,13 +36,16 @@ export class EditDespesasController {
     @Param('id') despesaId: string,
     @CurrentUser() user: UserPayload,
   ) {
-    const { name, valor, data, dataVencimento } = body
+    const { name, valor, data, dataVencimento, status } = body
     const userValidate = user.sub
+
+    console.log('aqui controller : ', body)
 
     const result = await this.editDespesas.execute({
       name,
       valor,
       data,
+      status,
       dataVencimento,
       despesaId,
       userId: new UniqueEntityId(userValidate),

@@ -6,10 +6,7 @@ import {
   Param,
 } from '@nestjs/common'
 import { right } from 'src/core/either'
-import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 import { DeleteUserUseCase } from 'src/domain/use-cases/users/user-delete-use-case'
-import { CurrentUser } from 'src/infra/auth/current-user-decorator'
-import { UserPayload } from 'src/infra/auth/jwt.strategy'
 
 @Controller('/accounts/:id')
 export class DeleteAccountController {
@@ -17,12 +14,9 @@ export class DeleteAccountController {
 
   @Delete()
   @HttpCode(204)
-  async handle(@Param('id') userId: string, @CurrentUser() user: UserPayload) {
-    const userValidate = user.sub
-
+  async handle(@Param('id') userId: string) {
     const result = await this.deleteAccount.execute({
       id: userId,
-      userId: new UniqueEntityId(userValidate),
     })
 
     if (result.isLeft()) {

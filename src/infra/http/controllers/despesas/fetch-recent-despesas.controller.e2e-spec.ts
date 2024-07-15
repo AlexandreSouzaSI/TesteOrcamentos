@@ -28,6 +28,10 @@ describe('Fetch recent despesas (E2E)', () => {
     await app.init()
   })
 
+  afterAll(async () => {
+    await app.close()
+  })
+
   test('[GET] /despesas', async () => {
     const user = await userFactory.makePrismaUser()
 
@@ -53,10 +57,18 @@ describe('Fetch recent despesas (E2E)', () => {
 
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual({
-      despesa: expect.arrayContaining([
-        expect.objectContaining({ name: 'Conta de Luz' }),
-        expect.objectContaining({ name: 'Conta de Agua' }),
-      ]),
+      value: {
+        despesas: expect.arrayContaining([
+          expect.objectContaining({ name: 'Conta de Luz' }),
+          expect.objectContaining({ name: 'Conta de Agua' }),
+        ]),
+        meta: {
+          pageIndex: 1,
+          perPage: 10,
+          totalCount: 2,
+          totalValue: 240.0,
+        },
+      },
     })
   })
 })

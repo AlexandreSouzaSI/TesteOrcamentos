@@ -8,6 +8,12 @@ async function bootstrap() {
   const configService = app.get(EnvService)
   const port = configService.get('PORT')
 
+  app.enableCors({
+    origin: 'http://localhost:5173',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  })
+
   await app.listen(port)
 }
 bootstrap()

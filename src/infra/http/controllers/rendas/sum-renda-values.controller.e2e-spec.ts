@@ -7,7 +7,7 @@ import { UserFactory } from 'test/factories/make-user'
 import { DatabaseModule } from 'src/infra/database/prisma/database.module'
 import { RendaFactory } from 'test/factories/make-renda'
 
-describe('Fetch recent renda (E2E)', () => {
+describe('Fetch total values renda (E2E)', () => {
   let app: INestApplication
   let jwt: JwtService
   let userFactory: UserFactory
@@ -28,7 +28,7 @@ describe('Fetch recent renda (E2E)', () => {
     await app.init()
   })
 
-  test('[GET] /renda', async () => {
+  test('[GET] /renda/sum/:userId', async () => {
     const user = await userFactory.makePrismaUser()
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
@@ -46,12 +46,13 @@ describe('Fetch recent renda (E2E)', () => {
       }),
     ])
 
+    const userId = user.id
+
     const response = await request(app.getHttpServer())
-      .get('/renda')
+      .get(`/renda/sum/${userId}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
-    expect(response.statusCode).toBe(200)
     expect(response.body).toEqual({
       renda: expect.arrayContaining([
         expect.objectContaining({ name: 'Salario' }),

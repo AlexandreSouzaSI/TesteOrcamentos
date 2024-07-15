@@ -27,9 +27,10 @@ model User {
 model Despesas {
   id             String    @id @default(uuid())
   name           String
-  data           DateTime?
+  data           String?
   valor          Decimal
-  dataVencimento DateTime?
+  dataVencimento String?
+  status         String
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime? @updatedAt @map("updated_at")
   userId         String    @map("user_id")
@@ -42,8 +43,9 @@ model Despesas {
 model Renda {
   id        String    @id @default(uuid())
   name      String
-  data      DateTime?
+  data      String?
   valor     Decimal
+  status    String
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
   userId    String    @map("user_id")

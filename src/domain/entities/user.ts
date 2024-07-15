@@ -25,7 +25,7 @@ export class User extends Entity<UserProps> {
   }
 
   set password(password: string) {
-    this.props.email = password
+    this.props.password = password
   }
 
   static create(props: UserProps, id?: UniqueEntityId) {

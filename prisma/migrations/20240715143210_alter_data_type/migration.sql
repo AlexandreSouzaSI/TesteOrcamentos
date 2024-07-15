@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "despesas" ALTER COLUMN "data" SET DATA TYPE TEXT,
+ALTER COLUMN "dataVencimento" SET DATA TYPE TEXT;
+
+-- AlterTable
+ALTER TABLE "rendas" ALTER COLUMN "data" SET DATA TYPE TEXT;

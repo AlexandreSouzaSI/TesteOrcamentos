@@ -5,13 +5,12 @@ import { Either, left } from 'src/core/either'
 import { ResourceNotFoundError } from 'src/core/errors/errors/resource-not-found-error'
 import { NotAllowedError } from 'src/core/errors/errors/not-allowed-error'
 import { User } from 'src/domain/entities/user'
-import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
+import { HashGenerator } from 'src/domain/cryptography/hash-generator'
 
 interface EditUserUseCaseRequest {
   id: string
   name?: string
   password?: string
-  userId: UniqueEntityId
 }
 
 type EditUserUseCaseResponse = Either<
@@ -23,7 +22,10 @@ type EditUserUseCaseResponse = Either<
 
 @Injectable()
 export class EditUserUseCase {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private hashGenerator: HashGenerator,
+  ) {}
 
   async execute({
     id,
@@ -40,7 +42,8 @@ export class EditUserUseCase {
       user.name = name
     }
     if (password) {
-      user.password = password
+      const hashedPassword = await this.hashGenerator.hash(password)
+      user.password = hashedPassword
     }
 
     await this.userRepository.save(user)

@@ -14,6 +14,7 @@ export class DeleteDespesasController {
   @Delete()
   @HttpCode(204)
   async handle(@Param('despesaId') despesaId: string) {
+    console.log('aqui: ', despesaId)
     const result = await this.deleteDespesas.execute({
       despesaId,
     })

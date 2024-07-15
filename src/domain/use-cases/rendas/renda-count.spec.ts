@@ -1,18 +1,18 @@
-import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
+import { CountRendaUseCase } from './renda-count-use-case'
 import { InMemoryRendaRepository } from 'test/repositories/in-memory-renda-repository'
 import { makeRenda } from 'test/factories/make-renda'
-import { FetchRecentRendaUseCase } from './renda-fetch-recent-use-case'
+import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 
 let inMemoryRendaRepository: InMemoryRendaRepository
-let sut: FetchRecentRendaUseCase
+let sut: CountRendaUseCase
 
-describe('Fetch a recent renda', () => {
+describe('Count Renda', () => {
   beforeEach(() => {
     inMemoryRendaRepository = new InMemoryRendaRepository()
-    sut = new FetchRecentRendaUseCase(inMemoryRendaRepository)
+    sut = new CountRendaUseCase(inMemoryRendaRepository)
   })
 
-  it('should be able to fetch recent renda', async () => {
+  it('should be able to count the number of rendas', async () => {
     for (let i = 1; i <= 22; i++) {
       await inMemoryRendaRepository.create(
         makeRenda({
@@ -24,9 +24,11 @@ describe('Fetch a recent renda', () => {
 
     const result = await sut.execute({
       userId: 'renda-1',
-      pageIndex: 2,
     })
 
-    expect(result.value?.renda).toHaveLength(2)
+    console.log(result)
+
+    expect(result.isRight()).toBe(true)
+    expect(result.value).toEqual({ renda: 22 })
   })
 })

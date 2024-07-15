@@ -4,8 +4,9 @@ import { Optional } from '../../core/types/optional'
 
 export interface RendaProps {
   name: string
-  data?: Date | null
+  data?: string | null
   valor: number
+  status: string
   createdAt: Date
   updatedAt?: Date | null
   userId: UniqueEntityId
@@ -36,6 +37,10 @@ export class Renda extends Entity<RendaProps> {
     return this.props.updatedAt
   }
 
+  get status() {
+    return this.props.status
+  }
+
   private touch() {
     this.props.updatedAt = new Date()
   }
@@ -50,7 +55,7 @@ export class Renda extends Entity<RendaProps> {
     this.touch()
   }
 
-  set data(data: Date | null) {
+  set data(data: string | null) {
     this.props.data = data
     this.touch()
   }
@@ -60,14 +65,20 @@ export class Renda extends Entity<RendaProps> {
     this.touch()
   }
 
+  set status(status: string) {
+    this.props.status = status
+    this.touch()
+  }
+
   static create(
-    props: Optional<RendaProps, 'createdAt' | 'data'>,
+    props: Optional<RendaProps, 'createdAt' | 'data' | 'status'>,
     id?: UniqueEntityId,
   ) {
     const renda = new Renda(
       {
         ...props,
         createdAt: props.createdAt ?? new Date(),
+        status: props.status ? props.status : 'pendente',
         data: props.data ?? null,
       },
       id,

@@ -1,17 +1,34 @@
 import { Injectable } from '@nestjs/common'
 import { RendaRepository } from '../../repositories/renda-repository'
 import { Either, right } from 'src/core/either'
-import { Renda } from 'src/domain/entities/renda'
+import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 
 interface FetchRecentRendaUseCaseRequest {
   userId: string
-  page: number
+  pageIndex: number
+  name?: string
+  status?: string
 }
 
-type FetchRecentRensaUseCaseResponse = Either<
+type FetchRecentRendaUseCaseResponse = Either<
   null,
   {
-    renda: Renda[]
+    renda: {
+      id: UniqueEntityId
+      name: string
+      data?: string | null
+      valor: number
+      status: string
+      createdAt: Date
+      updatedAt?: Date | null
+      userId: UniqueEntityId
+    }[]
+    meta: {
+      pageIndex: number
+      perPage: number
+      totalCount: number | null
+      totalValue: number | null
+    }
   }
 >
 
@@ -21,10 +38,23 @@ export class FetchRecentRendaUseCase {
 
   async execute({
     userId,
-    page,
-  }: FetchRecentRendaUseCaseRequest): Promise<FetchRecentRensaUseCaseResponse> {
-    const renda = await this.rendaRepository.findManyRecent({ page }, userId)
+    pageIndex,
+    name,
+    status,
+  }: FetchRecentRendaUseCaseRequest): Promise<FetchRecentRendaUseCaseResponse> {
+    const renda = await this.rendaRepository.findManyRecent(
+      { pageIndex },
+      userId,
+      name,
+      status,
+    )
 
-    return right({ renda })
+    const totalCount = await this.rendaRepository.findCount(userId)
+    const totalValue = await this.rendaRepository.sumRendaValues(userId)
+
+    return right({
+      renda,
+      meta: { pageIndex, perPage: 10, totalCount, totalValue },
+    })
   }
 }

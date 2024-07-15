@@ -1,17 +1,34 @@
 import { Injectable } from '@nestjs/common'
 import { Either, right } from 'src/core/either'
-import { Despesas } from '../../entities/despesas'
 import { DespesasRepository } from '../../repositories/despesas-repository'
+import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 
 interface FetchRecentDespesasUseCaseRequest {
   userId: string
-  page: number
+  pageIndex: number
+  name?: string
+  status?: string
 }
 
 type FetchRecentDespesasUseCaseResponse = Either<
   null,
   {
-    despesas: Despesas[]
+    despesas: {
+      id: UniqueEntityId
+      name: string
+      data?: string | null
+      valor: number
+      status: string
+      dataVencimento?: string | null
+      createdAt: Date
+      updatedAt?: Date | null
+      userId: UniqueEntityId
+    }[]
+    meta: {
+      pageIndex: number
+      perPage: number
+      totalCount: number | null
+    }
   }
 >
 
@@ -21,15 +38,19 @@ export class FetchRecentDespesasUseCase {
 
   async execute({
     userId,
-    page,
+    pageIndex,
+    name,
+    status,
   }: FetchRecentDespesasUseCaseRequest): Promise<FetchRecentDespesasUseCaseResponse> {
     const despesas = await this.despesasRepository.findManyRecent(
-      { page },
+      { pageIndex },
       userId,
+      name,
+      status,
     )
 
-    return right({
-      despesas,
-    })
+    const totalCount = await this.despesasRepository.findCount(userId)
+
+    return right({ despesas, meta: { pageIndex, perPage: 10, totalCount } })
   }
 }

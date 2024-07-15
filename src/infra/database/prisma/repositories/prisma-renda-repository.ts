@@ -31,19 +31,50 @@ export class PrismaRendaRepository implements RendaRepository {
     return PrismaRendaMapper.toDomain(renda)
   }
 
-  async findManyRecent({ page }: PaginationParams, id: string) {
-    const renda = await this.prisma.renda.findMany({
-      orderBy: {
-        createdAt: 'desc',
-      },
-      take: 10,
-      skip: (page - 1) * 10,
+  async findCount(id: string) {
+    const renda = await this.prisma.renda.count({
       where: {
         userId: id,
       },
     })
 
+    if (!renda) {
+      return null
+    }
+
+    return renda
+  }
+
+  async findManyRecent(
+    { pageIndex }: PaginationParams,
+    id: string,
+    name?: string,
+    status?: string,
+  ) {
+    const renda = await this.prisma.renda.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 10,
+      skip: (pageIndex - 1) * 10,
+      where: {
+        userId: id,
+        ...(name && { name: { contains: name } }),
+        ...(status && { status }),
+      },
+    })
+
     return renda.map(PrismaRendaMapper.toDomain)
+  }
+
+  async sumRendaValues(userId: string): Promise<number> {
+    const rendas = await this.prisma.renda.findMany({ where: { userId } })
+    const totalSum = rendas.reduce((sum, renda) => {
+      const valorNumeric = Number(renda.valor)
+      return sum + valorNumeric
+    }, 0)
+
+    return totalSum
   }
 
   async save(renda: Renda) {

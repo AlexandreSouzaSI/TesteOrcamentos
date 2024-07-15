@@ -8,10 +8,11 @@ import { Despesas } from 'src/domain/entities/despesas'
 
 interface EditDespesasUseCaseRequest {
   despesaId: string
-  name: string
-  data?: Date | null
-  valor: number
-  dataVencimento?: Date | null
+  name?: string
+  data?: string | null
+  valor?: number
+  status?: string
+  dataVencimento?: string | null
   userId: UniqueEntityId
 }
 
@@ -31,6 +32,7 @@ export class EditDespesasUseCase {
     name,
     data,
     valor,
+    status,
     dataVencimento,
   }: EditDespesasUseCaseRequest): Promise<EditDespesasUseCaseResponse> {
     const despesa = await this.despesasRepository.findById(despesaId)
@@ -39,9 +41,19 @@ export class EditDespesasUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    despesa.name = name
+    if (status) {
+      despesa.status = status
+    }
+
+    if (name) {
+      despesa.name = name
+    }
+
+    if (valor) {
+      despesa.valor = valor
+    }
+
     despesa.data = data ?? null
-    despesa.valor = valor
     despesa.dataVencimento = dataVencimento ?? null
 
     await this.despesasRepository.save(despesa)

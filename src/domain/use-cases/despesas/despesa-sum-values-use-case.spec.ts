@@ -1,32 +1,32 @@
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
+import { SumDespesaUseCase } from './despesa-sum-values-use-case'
 import { InMemoryDespesasRepository } from 'test/repositories/in-memory-despesas-repository'
-import { FetchRecentDespesasUseCase } from './despesas-fetch-recent-use-case'
 import { makeDespesa } from 'test/factories/make-despesa'
 
 let inMemoryDespesasRepository: InMemoryDespesasRepository
-let sut: FetchRecentDespesasUseCase
+let sut: SumDespesaUseCase
 
-describe('Fetch a recent despesas', () => {
+describe('Fetch a value total despesa', () => {
   beforeEach(() => {
     inMemoryDespesasRepository = new InMemoryDespesasRepository()
-    sut = new FetchRecentDespesasUseCase(inMemoryDespesasRepository)
+    sut = new SumDespesaUseCase(inMemoryDespesasRepository)
   })
 
-  it('should be able to fetch recent odespesas', async () => {
-    for (let i = 1; i <= 22; i++) {
+  it('should be able to fetch value total despesa', async () => {
+    for (let i = 1; i <= 10; i++) {
       await inMemoryDespesasRepository.create(
         makeDespesa({
-          userId: new UniqueEntityId('user-1'),
+          userId: new UniqueEntityId('despesa-1'),
           createdAt: new Date(),
+          valor: 100,
         }),
       )
     }
 
     const result = await sut.execute({
-      userId: 'user-1',
-      pageIndex: 2,
+      userId: 'despesa-1',
     })
 
-    expect(result.value?.despesas).toHaveLength(2)
+    expect(result.value?.despesa).toEqual(1000)
   })
 })

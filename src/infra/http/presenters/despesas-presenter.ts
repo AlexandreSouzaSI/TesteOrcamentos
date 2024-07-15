@@ -7,6 +7,7 @@ export class DespesasPresenter {
       name: despesa.name,
       data: despesa.data,
       valor: despesa.valor,
+      status: despesa.status,
       dataVencimento: despesa.dataVencimento,
       createdAt: despesa.createdAt,
       updatedAt: despesa.updatedAt,

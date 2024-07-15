@@ -8,7 +8,8 @@ import { Either } from 'src/core/either'
 interface CreateRendaUseCaseRequest {
   userId: UniqueEntityId
   name: string
-  data?: Date | null
+  data?: string | null
+  status: string
   valor: number
 }
 
@@ -26,15 +27,18 @@ export class CreateRendaUseCase {
   async execute({
     name,
     valor,
+    status,
     data,
     userId,
   }: CreateRendaUseCaseRequest): Promise<CreateRensaUseCaseResponse> {
     const renda = Renda.create({
       name,
       userId,
+      status,
       valor,
       data,
     })
+    console.log('use case :', renda)
 
     await this.rendaRepository.create(renda)
 

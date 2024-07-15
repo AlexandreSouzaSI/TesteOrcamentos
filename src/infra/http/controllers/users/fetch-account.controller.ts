@@ -26,6 +26,6 @@ export class FetchAccountController {
       throw new BadRequestException('User not found')
     }
 
-    return { renda: UserPresenter.toHTTP(user) }
+    return { user: UserPresenter.toHTTP(user) }
   }
 }

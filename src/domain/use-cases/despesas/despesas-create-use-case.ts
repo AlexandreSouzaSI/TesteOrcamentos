@@ -7,9 +7,10 @@ import { DespesasRepository } from '../../repositories/despesas-repository'
 interface CreateDespesasUseCaseRequest {
   userId: UniqueEntityId
   name: string
-  data?: Date | null
+  data?: string | null
+  status: string
   valor: number
-  dataVencimento?: Date | null
+  dataVencimento?: string | null
 }
 
 type CreateDespesasUseCaseResponse = Either<
@@ -27,12 +28,15 @@ export class CreateDespesasUseCase {
     name,
     data,
     valor,
+    status,
     dataVencimento,
     userId,
   }: CreateDespesasUseCaseRequest): Promise<CreateDespesasUseCaseResponse> {
+    console.log('aqui')
     const despesa = Despesas.create({
       userId,
       name,
+      status,
       data,
       valor,
       dataVencimento,

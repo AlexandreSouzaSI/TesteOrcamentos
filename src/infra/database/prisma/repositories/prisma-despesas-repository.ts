@@ -31,19 +31,50 @@ export class PrismaDespesasRepository implements DespesasRepository {
     return PrismaDespesasMapper.toDomain(despesa)
   }
 
-  async findManyRecent({ page }: PaginationParams, id: string) {
-    const despesas = await this.prisma.despesas.findMany({
-      orderBy: {
-        createdAt: 'desc',
-      },
-      take: 10,
-      skip: (page - 1) * 10,
+  async findCount(id: string) {
+    const despesa = await this.prisma.despesas.count({
       where: {
         userId: id,
       },
     })
 
+    if (!despesa) {
+      return null
+    }
+
+    return despesa
+  }
+
+  async findManyRecent(
+    { pageIndex }: PaginationParams,
+    id: string,
+    name?: string,
+    status?: string,
+  ) {
+    const despesas = await this.prisma.despesas.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 10,
+      skip: (pageIndex - 1) * 10,
+      where: {
+        userId: id,
+        ...(name && { name: { contains: name } }),
+        ...(status && { status }),
+      },
+    })
+
     return despesas.map(PrismaDespesasMapper.toDomain)
+  }
+
+  async sumDespesaValues(userId: string): Promise<number> {
+    const despesa = await this.prisma.despesas.findMany({ where: { userId } })
+    const totalSum = despesa.reduce((sum, despesa) => {
+      const valorNumeric = Number(despesa.valor)
+      return sum + valorNumeric
+    }, 0)
+
+    return totalSum
   }
 
   async save(despesa: Despesas) {

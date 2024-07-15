@@ -18,7 +18,7 @@ describe('Delete user', () => {
     await inMemoryUserRepository.create(newUser)
 
     await sut.execute({
-      userId: 'user-1',
+      id: 'user-1',
     })
 
     expect(inMemoryUserRepository.items).toHaveLength(0)

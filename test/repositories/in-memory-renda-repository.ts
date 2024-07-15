@@ -1,3 +1,4 @@
+import Decimal from 'decimal.js'
 import { PaginationParams } from 'src/core/repositories/pagination-params'
 import { Renda } from 'src/domain/entities/renda'
 import { RendaRepository } from 'src/domain/repositories/renda-repository'
@@ -19,16 +20,41 @@ export class InMemoryRendaRepository implements RendaRepository {
     return renda
   }
 
-  async findManyRecent({ page }: PaginationParams, id: string) {
+  async findCount(id: string) {
+    const renda = this.items.filter(
+      (item) => item.userId.toString() === id,
+    ).length
+
+    if (!renda) {
+      return null
+    }
+
+    console.log(renda)
+    return renda
+  }
+
+  async findManyRecent({ pageIndex }: PaginationParams, id: string) {
     const filteredRenda = this.items.filter(
       (item) => item.userId.toString() === id,
     )
 
     const renda = filteredRenda
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-      .slice((page - 1) * 20, page * 20)
+      .slice((pageIndex - 1) * 20, pageIndex * 20)
 
     return renda
+  }
+
+  async sumRendaValues(userId: string): Promise<number> {
+    const rendas = this.items.filter(
+      (item) => item.userId.toString() === userId,
+    )
+
+    const totalSum = rendas.reduce((sum, renda) => {
+      return new Decimal(sum).add(renda.valor).toNumber()
+    }, 0)
+
+    return totalSum
   }
 
   async save(renda: Renda) {
