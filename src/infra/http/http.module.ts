@@ -37,6 +37,8 @@ import { AuthController } from './controllers/logout.controller'
 import { CountDespesaUseCase } from 'src/domain/use-cases/despesas/despesa-count-use-case'
 import { SumRendaUseCase } from 'src/domain/use-cases/rendas/renda-sum-values-use-case'
 import { SumDespesaUseCase } from 'src/domain/use-cases/despesas/despesa-sum-values-use-case'
+import { DifferenceUseCase } from 'src/domain/use-cases/users/user-difference-use-case'
+import { DifferenceController } from './controllers/users/difference.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -57,6 +59,7 @@ import { SumDespesaUseCase } from 'src/domain/use-cases/despesas/despesa-sum-val
     FetchRendaController,
     FetchRecentRendaController,
     AuthController,
+    DifferenceController,
   ],
   providers: [
     PrismaClient,
@@ -79,6 +82,7 @@ import { SumDespesaUseCase } from 'src/domain/use-cases/despesas/despesa-sum-val
     CountDespesaUseCase,
     SumRendaUseCase,
     SumDespesaUseCase,
+    DifferenceUseCase,
   ],
 })
 export class HttpModule {}

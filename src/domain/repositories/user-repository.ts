@@ -6,4 +6,5 @@ export abstract class UserRepository {
   abstract findByEmail(email: string): Promise<User | null>
   abstract save(data: User): Promise<void>
   abstract delete(data: User): Promise<void>
+  abstract difference(id: string): Promise<number | null>
 }

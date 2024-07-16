@@ -55,6 +55,27 @@ export class PrismaUserRepository implements UserRepository {
     })
   }
 
+  async difference(id: string) {
+    console.log(id)
+    const rendas = await this.prisma.renda.findMany({ where: { userId: id } })
+    const rendasSum = rendas.reduce((sum, renda) => {
+      const valorNumeric = Number(renda.valor)
+      return sum + valorNumeric
+    }, 0)
+
+    const despesa = await this.prisma.despesas.findMany({
+      where: { userId: id },
+    })
+    const despesaSum = despesa.reduce((sum, despesa) => {
+      const valorNumeric = Number(despesa.valor)
+      return sum + valorNumeric
+    }, 0)
+
+    const diference = rendasSum - despesaSum
+
+    return diference
+  }
+
   async delete(user: User) {
     const data = PrismaUserMapper.toPrisma(user)
 
