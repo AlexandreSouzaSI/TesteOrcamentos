@@ -15,6 +15,7 @@ export function makeRenda(
       data: faker.date.anytime().toString(),
       valor: faker.number.float(),
       userId: new UniqueEntityId(),
+      status: faker.lorem.lines(),
       ...override,
     },
     id,

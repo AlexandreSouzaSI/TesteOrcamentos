@@ -7,12 +7,11 @@ import { UserFactory } from 'test/factories/make-user'
 import { DatabaseModule } from 'src/infra/database/prisma/database.module'
 import { RendaFactory } from 'test/factories/make-renda'
 
-describe('Fetch recent renda (E2E)', () => {
+describe('Fetch recent rendas (E2E)', () => {
   let app: INestApplication
   let jwt: JwtService
   let userFactory: UserFactory
   let rendaFactory: RendaFactory
-
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
@@ -28,41 +27,66 @@ describe('Fetch recent renda (E2E)', () => {
     await app.init()
   })
 
-  test('[GET] /renda', async () => {
+  afterAll(async () => {
+    await app.close()
+  })
+
+  test('[GET] /renda - Paginated', async () => {
     const user = await userFactory.makePrismaUser()
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
-    await Promise.all([
-      rendaFactory.makePrismaRenda({
-        name: 'Salario',
-        valor: 1200.0,
+    for (let i = 1; i <= 22; i++) {
+      await rendaFactory.makePrismaRenda({
+        name: `Renda ${i}`,
+        valor: 1,
         userId: user.id,
-      }),
-      rendaFactory.makePrismaRenda({
-        name: 'FreeLancer',
-        valor: 1200.0,
-        userId: user.id,
-      }),
-    ])
+      })
+    }
 
-    const response = await request(app.getHttpServer())
-      .get('/renda')
+    // Testando a primeira página
+    const responsePage1 = await request(app.getHttpServer())
+      .get('/renda?pageIndex=1&perPage=10') // Alterado para /rendas
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
-    expect(response.statusCode).toBe(200)
-    expect(response.body.value).toEqual({
-      renda: expect.arrayContaining([
-        expect.objectContaining({ name: 'Salario' }),
-        expect.objectContaining({ name: 'FreeLancer' }),
-      ]),
-      meta: {
-        pageIndex: 1,
-        perPage: 10,
-        totalCount: 2,
-        totalValue: 2400.0,
-      },
+    expect(responsePage1.statusCode).toBe(200)
+    expect(responsePage1.body.value.renda.length).toBe(10) // Alterado para rendas
+    expect(responsePage1.body.value.meta).toEqual({
+      pageIndex: 1,
+      perPage: 10,
+      totalCount: 22,
+      totalValue: 22,
+    })
+
+    // Testando a segunda página
+    const responsePage2 = await request(app.getHttpServer())
+      .get('/renda?pageIndex=2&perPage=10') // Alterado para /rendas
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send()
+
+    expect(responsePage2.statusCode).toBe(200)
+    expect(responsePage2.body.value.renda.length).toBe(10) // Alterado para rendas
+    expect(responsePage2.body.value.meta).toEqual({
+      pageIndex: 2,
+      perPage: 10,
+      totalCount: 22,
+      totalValue: 22,
+    })
+
+    // Testando a terceira página
+    const responsePage3 = await request(app.getHttpServer())
+      .get('/renda?pageIndex=3&perPage=10') // Alterado para /rendas
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send()
+
+    expect(responsePage3.statusCode).toBe(200)
+    expect(responsePage3.body.value.renda.length).toBe(2) // Alterado para rendas
+    expect(responsePage3.body.value.meta).toEqual({
+      pageIndex: 3,
+      perPage: 10,
+      totalCount: 22,
+      totalValue: 22,
     })
   })
 })

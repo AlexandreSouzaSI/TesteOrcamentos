@@ -39,7 +39,7 @@ export class InMemoryDespesasRepository implements DespesasRepository {
 
     const despesa = filteredDespesas
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-      .slice((pageIndex - 1) * 20, pageIndex * 20)
+      .slice((pageIndex - 1) * 10, pageIndex * 10)
 
     return despesa
   }

@@ -1,10 +1,4 @@
-import {
-  BadRequestException,
-  Controller,
-  Get,
-  Param,
-  Query,
-} from '@nestjs/common'
+import { BadRequestException, Controller, Get, Query } from '@nestjs/common'
 import { FetchRecentDespesasUseCase } from 'src/domain/use-cases/despesas/despesas-fetch-recent-use-case'
 import { CurrentUser } from 'src/infra/auth/current-user-decorator'
 import { UserPayload } from 'src/infra/auth/jwt.strategy'
@@ -40,7 +34,7 @@ export class FetchRecentDespesasController {
 
   @Get()
   async handle(
-    @Param('pageIndex', queryValidationPipe)
+    @Query('pageIndex', queryValidationPipe)
     pageIndex: PageQueryParamSchema,
     @Query('name') name: NameQueryParamSchema,
     @Query('status') status: StatusQueryParamSchema,

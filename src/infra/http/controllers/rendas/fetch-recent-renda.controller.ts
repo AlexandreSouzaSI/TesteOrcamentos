@@ -34,7 +34,7 @@ export class FetchRecentRendaController {
 
   @Get()
   async handle(
-    @Query('page', queryValidationPipe)
+    @Query('pageIndex', queryValidationPipe)
     pageIndex: PageQueryParamSchema,
     @Query('name') name: NameQueryParamSchema,
     @Query('status') status: StatusQueryParamSchema,

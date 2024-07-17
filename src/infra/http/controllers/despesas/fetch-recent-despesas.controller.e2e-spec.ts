@@ -32,43 +32,62 @@ describe('Fetch recent despesas (E2E)', () => {
     await app.close()
   })
 
-  test('[GET] /despesas', async () => {
+  test('[GET] /despesas - Paginated', async () => {
     const user = await userFactory.makePrismaUser()
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
-    await Promise.all([
-      despesaFactory.makePrismaDespesa({
-        name: 'Conta de Luz',
-        valor: 120.0,
+    for (let i = 1; i <= 22; i++) {
+      await despesaFactory.makePrismaDespesa({
+        name: `Despesa ${i}`,
         userId: user.id,
-      }),
-      despesaFactory.makePrismaDespesa({
-        name: 'Conta de Agua',
-        valor: 120.0,
-        userId: user.id,
-      }),
-    ])
+        valor: 1,
+      })
+    }
 
-    const response = await request(app.getHttpServer())
-      .get('/despesas')
+    // Testando a primeira página
+    const responsePage1 = await request(app.getHttpServer())
+      .get('/despesas?pageIndex=1&perPage=10')
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
-    expect(response.statusCode).toBe(200)
-    expect(response.body).toEqual({
-      value: {
-        despesas: expect.arrayContaining([
-          expect.objectContaining({ name: 'Conta de Luz' }),
-          expect.objectContaining({ name: 'Conta de Agua' }),
-        ]),
-        meta: {
-          pageIndex: 1,
-          perPage: 10,
-          totalCount: 2,
-          totalValue: 240.0,
-        },
-      },
+    expect(responsePage1.statusCode).toBe(200)
+    expect(responsePage1.body.value.despesas.length).toBe(10)
+    expect(responsePage1.body.value.meta).toEqual({
+      pageIndex: 1,
+      perPage: 10,
+      totalCount: 22,
+      totalValue: 22,
+    })
+
+    // Testando a segunda página
+    const responsePage2 = await request(app.getHttpServer())
+      .get('/despesas?pageIndex=2&perPage=10')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send()
+
+    expect(responsePage2.statusCode).toBe(200)
+    expect(responsePage2.body.value.despesas.length).toBe(10)
+    expect(responsePage2.body.value.meta).toEqual({
+      pageIndex: 2,
+      perPage: 10,
+      totalCount: 22,
+      totalValue: 22,
+    })
+
+    // Testando a terceira página
+    const responsePage3 = await request(app.getHttpServer())
+      .get('/despesas?pageIndex=3&perPage=10')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send()
+
+    expect(responsePage3.statusCode).toBe(200)
+    expect(responsePage3.body.value.despesas.length).toBe(2)
+    expect(responsePage3.body.value.meta).toEqual({
+      pageIndex: 3,
+      perPage: 10,
+      totalCount: 22,
+      totalValue: 22,
     })
   })
 })
