@@ -1,4 +1,4 @@
-import { InMemoryUserRepository } from 'test/repositories/in-memory-user-repository'
+import { InMemoryUserRepository } from '@test/repositories/in-memory-user-repository'
 import { DeleteUserUseCase } from './user-delete-use-case'
 import { makeUser } from 'test/factories/make-user'
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'

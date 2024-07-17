@@ -39,6 +39,7 @@ describe('Create renda (E2E)', () => {
       .send({
         name: 'Salario',
         valor: 12000.0,
+        status: 'pago',
       })
 
     expect(response.statusCode).toBe(201)

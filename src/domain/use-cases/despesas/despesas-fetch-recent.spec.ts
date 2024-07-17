@@ -1,7 +1,7 @@
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
-import { InMemoryDespesasRepository } from 'test/repositories/in-memory-despesas-repository'
 import { FetchRecentDespesasUseCase } from './despesas-fetch-recent-use-case'
 import { makeDespesa } from 'test/factories/make-despesa'
+import { InMemoryDespesasRepository } from '@test/repositories/in-memory-despesas-repository'
 
 let inMemoryDespesasRepository: InMemoryDespesasRepository
 let sut: FetchRecentDespesasUseCase

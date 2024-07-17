@@ -1,4 +1,4 @@
-import { InMemoryUserRepository } from 'test/repositories/in-memory-user-repository'
+import { InMemoryUserRepository } from '@test/repositories/in-memory-user-repository'
 import { EditUserUseCase } from './user-edit-use-case'
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 import { makeUser } from 'test/factories/make-user'

@@ -36,7 +36,7 @@ describe('Fetch total values despesa (E2E)', () => {
     await Promise.all([
       despesaFactory.makePrismaDespesa({
         name: 'Salario',
-        valor: 12000.0,
+        valor: 1200.0,
         userId: user.id,
       }),
       despesaFactory.makePrismaDespesa({
@@ -51,17 +51,8 @@ describe('Fetch total values despesa (E2E)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
-    expect(response.body).toEqual({
-      despesa: expect.arrayContaining([
-        expect.objectContaining({ name: 'Salario' }),
-        expect.objectContaining({ name: 'FreeLancer' }),
-      ]),
-      meta: {
-        pageIndex: 1,
-        perPage: 10,
-        totalCount: 2,
-        totalValue: 2400.0,
-      },
+    expect(response.body.totalSum.value).toEqual({
+      despesa: 2400,
     })
   })
 })

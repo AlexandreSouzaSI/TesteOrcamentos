@@ -1,4 +1,4 @@
-import { InMemoryRendaRepository } from 'test/repositories/in-memory-renda-repository'
+import { InMemoryRendaRepository } from '@test/repositories/in-memory-renda-repository'
 import { EditRendaUseCase } from './renda-edit-use-case'
 import { makeRenda } from 'test/factories/make-renda'
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
@@ -21,6 +21,8 @@ describe('Edit renda', () => {
       rendaId: 'renda-1',
       name: 'salario',
       valor: 2500,
+      userId: new UniqueEntityId('user-1'),
+      status: 'vencido',
     })
 
     expect(inMemoryRendaRepository.items[0]).toMatchObject({

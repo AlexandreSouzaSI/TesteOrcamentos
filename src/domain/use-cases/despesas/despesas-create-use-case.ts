@@ -32,7 +32,6 @@ export class CreateDespesasUseCase {
     dataVencimento,
     userId,
   }: CreateDespesasUseCaseRequest): Promise<CreateDespesasUseCaseResponse> {
-    console.log('aqui')
     const despesa = Despesas.create({
       userId,
       name,

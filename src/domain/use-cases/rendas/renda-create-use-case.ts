@@ -38,7 +38,6 @@ export class CreateRendaUseCase {
       valor,
       data,
     })
-    console.log('use case :', renda)
 
     await this.rendaRepository.create(renda)
 

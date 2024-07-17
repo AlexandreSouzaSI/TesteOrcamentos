@@ -1,7 +1,7 @@
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
-import { InMemoryDespesasRepository } from 'test/repositories/in-memory-despesas-repository'
 import { CountDespesaUseCase } from './despesa-count-use-case'
 import { makeDespesa } from 'test/factories/make-despesa'
+import { InMemoryDespesasRepository } from '@test/repositories/in-memory-despesas-repository'
 
 let inMemoryDespesaRepository: InMemoryDespesasRepository
 let sut: CountDespesaUseCase
@@ -25,8 +25,6 @@ describe('Count Despesa', () => {
     const result = await sut.execute({
       userId: 'despesa-1',
     })
-
-    console.log(result)
 
     expect(result.isRight()).toBe(true)
     expect(result.value).toEqual({ despesa: 22 })

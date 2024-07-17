@@ -3,8 +3,8 @@ import { Test } from '@nestjs/testing'
 import { hash } from 'bcryptjs'
 import request from 'supertest'
 import { AppModule } from '../../app.module'
-import { UserFactory } from 'test/factories/make-user'
 import { DatabaseModule } from 'src/infra/database/prisma/database.module'
+import { UserFactory } from 'test/factories/make-user'
 
 describe('Authenticate (E2E)', () => {
   let app: INestApplication

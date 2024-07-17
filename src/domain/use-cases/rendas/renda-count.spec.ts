@@ -1,5 +1,5 @@
 import { CountRendaUseCase } from './renda-count-use-case'
-import { InMemoryRendaRepository } from 'test/repositories/in-memory-renda-repository'
+import { InMemoryRendaRepository } from '@test/repositories/in-memory-renda-repository'
 import { makeRenda } from 'test/factories/make-renda'
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 
@@ -25,8 +25,6 @@ describe('Count Renda', () => {
     const result = await sut.execute({
       userId: 'renda-1',
     })
-
-    console.log(result)
 
     expect(result.isRight()).toBe(true)
     expect(result.value).toEqual({ renda: 22 })

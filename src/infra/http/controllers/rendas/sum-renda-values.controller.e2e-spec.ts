@@ -53,17 +53,8 @@ describe('Fetch total values renda (E2E)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
-    expect(response.body).toEqual({
-      renda: expect.arrayContaining([
-        expect.objectContaining({ name: 'Salario' }),
-        expect.objectContaining({ name: 'FreeLancer' }),
-      ]),
-      meta: {
-        pageIndex: 1,
-        perPage: 10,
-        totalCount: 2,
-        totalValue: 2400.0,
-      },
+    expect(response.body.totalSum.value).toEqual({
+      renda: 2400,
     })
   })
 })

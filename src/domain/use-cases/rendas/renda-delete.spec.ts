@@ -1,4 +1,4 @@
-import { InMemoryRendaRepository } from 'test/repositories/in-memory-renda-repository'
+import { InMemoryRendaRepository } from '@test/repositories/in-memory-renda-repository'
 import { DeleteRendaUseCase } from './renda-delete-use-case'
 import { makeRenda } from 'test/factories/make-renda'
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'

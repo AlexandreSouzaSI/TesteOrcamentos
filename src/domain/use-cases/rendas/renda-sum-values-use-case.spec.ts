@@ -1,5 +1,5 @@
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
-import { InMemoryRendaRepository } from 'test/repositories/in-memory-renda-repository'
+import { InMemoryRendaRepository } from '@test/repositories/in-memory-renda-repository'
 import { makeRenda } from 'test/factories/make-renda'
 import { SumRendaUseCase } from './renda-sum-values-use-case'
 

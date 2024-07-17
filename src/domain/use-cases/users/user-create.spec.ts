@@ -1,4 +1,4 @@
-import { InMemoryUserRepository } from 'test/repositories/in-memory-user-repository'
+import { InMemoryUserRepository } from '@test/repositories/in-memory-user-repository'
 import { CreateUserUseCase } from './user-create-use-case'
 import { FakeHasher } from 'test/cryptography/fake-hasher'
 

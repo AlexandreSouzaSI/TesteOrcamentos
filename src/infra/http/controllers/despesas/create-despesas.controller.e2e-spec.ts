@@ -39,6 +39,7 @@ describe('Create despesa (E2E)', () => {
       .send({
         name: 'Conta de Luz',
         valor: 120.0,
+        status: 'vencido',
       })
 
     expect(response.statusCode).toBe(201)

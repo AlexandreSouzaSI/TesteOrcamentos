@@ -47,8 +47,6 @@ export class AuthenticateController {
 
     const { accessToken } = result.value
 
-    console.log(accessToken)
-
     return {
       access_token: accessToken,
     }

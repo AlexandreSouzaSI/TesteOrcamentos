@@ -29,7 +29,6 @@ export class InMemoryRendaRepository implements RendaRepository {
       return null
     }
 
-    console.log(renda)
     return renda
   }
 

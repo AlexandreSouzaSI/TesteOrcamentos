@@ -12,7 +12,7 @@ export function makeRenda(
   const renda = Renda.create(
     {
       name: faker.person.firstName(),
-      data: faker.date.anytime(),
+      data: faker.date.anytime().toString(),
       valor: faker.number.float(),
       userId: new UniqueEntityId(),
       ...override,

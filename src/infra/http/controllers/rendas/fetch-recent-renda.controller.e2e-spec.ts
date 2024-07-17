@@ -52,7 +52,7 @@ describe('Fetch recent renda (E2E)', () => {
       .send()
 
     expect(response.statusCode).toBe(200)
-    expect(response.body).toEqual({
+    expect(response.body.value).toEqual({
       renda: expect.arrayContaining([
         expect.objectContaining({ name: 'Salario' }),
         expect.objectContaining({ name: 'FreeLancer' }),

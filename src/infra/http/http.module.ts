@@ -39,6 +39,8 @@ import { SumRendaUseCase } from 'src/domain/use-cases/rendas/renda-sum-values-us
 import { SumDespesaUseCase } from 'src/domain/use-cases/despesas/despesa-sum-values-use-case'
 import { DifferenceUseCase } from 'src/domain/use-cases/users/user-difference-use-case'
 import { DifferenceController } from './controllers/users/difference.controller'
+import { SumDespesaController } from './controllers/despesas/sum-despesa-values.controller'
+import { SumRendaController } from './controllers/rendas/sum-renda-values.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -60,6 +62,8 @@ import { DifferenceController } from './controllers/users/difference.controller'
     FetchRecentRendaController,
     AuthController,
     DifferenceController,
+    SumDespesaController,
+    SumRendaController,
   ],
   providers: [
     PrismaClient,

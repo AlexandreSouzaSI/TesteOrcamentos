@@ -39,8 +39,6 @@ export class EditDespesasController {
     const { name, valor, data, dataVencimento, status } = body
     const userValidate = user.sub
 
-    console.log('aqui controller : ', body)
-
     const result = await this.editDespesas.execute({
       name,
       valor,

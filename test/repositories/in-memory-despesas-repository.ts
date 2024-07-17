@@ -1,7 +1,7 @@
 import Decimal from 'decimal.js'
-import { PaginationParams } from 'src/core/repositories/pagination-params'
-import { Despesas } from 'src/domain/entities/despesas'
 import { DespesasRepository } from 'src/domain/repositories/despesas-repository'
+import { PaginationParams } from 'src/core/repositories/pagination-params'
+import { Despesas } from '@src/domain/entities/despesas'
 
 export class InMemoryDespesasRepository implements DespesasRepository {
   public items: Despesas[] = []

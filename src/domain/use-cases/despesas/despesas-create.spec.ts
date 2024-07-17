@@ -1,6 +1,6 @@
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 import { CreateDespesasUseCase } from './despesas-create-use-case'
-import { InMemoryDespesasRepository } from 'test/repositories/in-memory-despesas-repository'
+import { InMemoryDespesasRepository } from '@test/repositories/in-memory-despesas-repository'
 
 let inMemoryDespesasRepository: InMemoryDespesasRepository
 let sut: CreateDespesasUseCase
@@ -16,8 +16,9 @@ describe('create a despesa', () => {
       userId: new UniqueEntityId('21'),
       name: 'conta de luz',
       valor: 100,
-      data: new Date(),
-      dataVencimento: new Date(),
+      status: 'pago',
+      data: '15/06/2024',
+      dataVencimento: '15/06/2024',
     })
 
     expect(despesa.value?.despesa.valor).toEqual(100)

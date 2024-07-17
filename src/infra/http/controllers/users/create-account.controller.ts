@@ -30,7 +30,6 @@ export class CreateAccountController {
   @HttpCode(201)
   @UsePipes(new ZodValidationPipe(createAccountBodySchema))
   async handle(@Body() body: CreateAccountBodySchema) {
-    console.log(body)
     const { name, email, password } = body
 
     const result = await this.createAccount.execute({
