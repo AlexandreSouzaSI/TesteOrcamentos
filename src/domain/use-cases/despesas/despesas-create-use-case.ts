@@ -10,7 +10,7 @@ interface CreateDespesasUseCaseRequest {
   data?: string | null
   status: string
   valor: number
-  dataVencimento?: string | null
+  dataVencimento: string
 }
 
 type CreateDespesasUseCaseResponse = Either<

@@ -85,7 +85,6 @@ export class Despesas extends Entity<DespesasProps> {
         createdAt: props.createdAt ?? new Date(),
         status: props.status ? props.status : 'pendente',
         data: props.data ?? null,
-        dataVencimento: props.data ?? null,
       },
       id,
     )

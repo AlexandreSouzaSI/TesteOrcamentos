@@ -53,8 +53,11 @@ export class EditDespesasUseCase {
       despesa.valor = valor
     }
 
+    if (dataVencimento) {
+      despesa.dataVencimento = dataVencimento
+    }
+
     despesa.data = data ?? null
-    despesa.dataVencimento = dataVencimento ?? null
 
     await this.despesasRepository.save(despesa)
 

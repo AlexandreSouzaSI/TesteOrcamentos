@@ -27,6 +27,6 @@ describe('Fetch a recent despesas', () => {
       pageIndex: 2,
     })
 
-    expect(result.value?.despesas).toHaveLength(2)
+    expect(result.value?.despesas).toHaveLength(10)
   })
 })

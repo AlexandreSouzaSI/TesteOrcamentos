@@ -72,7 +72,7 @@ export class FetchRecentDespesasController {
         data: r.data,
         valor: r.valor,
         status: r.status,
-        dataVecimento: r.dataVencimento,
+        dataVencimento: r.dataVencimento,
         createdAt: r.createdAt,
         updatedAt: r.updatedAt,
         userId: r.userId.toString(),

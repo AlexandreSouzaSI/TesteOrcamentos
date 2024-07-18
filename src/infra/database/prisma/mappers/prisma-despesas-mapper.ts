@@ -27,7 +27,7 @@ export class PrismaDespesasMapper {
       data: despesa.data,
       status: despesa.status,
       userId: despesa.userId.toString(),
-      dataVencimento: despesa.data,
+      dataVencimento: despesa.dataVencimento,
       createdAt: despesa.createdAt,
       updatedAt: despesa.updatedAt,
     }

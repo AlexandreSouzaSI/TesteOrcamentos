@@ -16,7 +16,7 @@ const createDespesasBodySchema = z.object({
   name: z.string(),
   data: z.string().optional(),
   valor: z.coerce.number(),
-  dataVencimento: z.string().optional(),
+  dataVencimento: z.string(),
   status: z.string(),
 })
 

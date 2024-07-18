@@ -28,6 +28,11 @@ describe('Create despesa (E2E)', () => {
     await app.init()
   })
 
+  afterAll(async () => {
+    await prisma.$disconnect()
+    await app.close()
+  })
+
   test('[POST] /despesa', async () => {
     const user = await userFactory.makePrismaUser()
 
@@ -40,6 +45,7 @@ describe('Create despesa (E2E)', () => {
         name: 'Conta de Luz',
         valor: 120.0,
         status: 'vencido',
+        dataVencimento: '2024-07-17',
       })
 
     expect(response.statusCode).toBe(201)
@@ -49,7 +55,7 @@ describe('Create despesa (E2E)', () => {
         name: 'Conta de Luz',
       },
     })
-
     expect(despesaOnDatabase).toBeTruthy()
+    expect(despesaOnDatabase?.dataVencimento).toEqual('2024-07-17')
   })
 })
