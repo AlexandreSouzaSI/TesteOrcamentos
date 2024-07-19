@@ -4,6 +4,7 @@ import { DespesasRepository } from 'src/domain/repositories/despesas-repository'
 
 interface SumDespesaUseCaseRequest {
   userId: string
+  status?: string | null
 }
 
 type SumDespesaUseCaseResponse = Either<
@@ -19,9 +20,13 @@ export class SumDespesaUseCase {
 
   async execute({
     userId,
+    status,
   }: SumDespesaUseCaseRequest): Promise<SumDespesaUseCaseResponse> {
     try {
-      const despesa = await this.despesaRepository.sumDespesaValues(userId)
+      const despesa = await this.despesaRepository.sumDespesaValues(
+        userId,
+        status ?? undefined,
+      )
 
       return right({ despesa })
     } catch (error) {

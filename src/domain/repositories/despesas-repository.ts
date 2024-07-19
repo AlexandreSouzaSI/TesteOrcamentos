@@ -12,7 +12,7 @@ export abstract class DespesasRepository {
     status?: string,
   ): Promise<Despesas[]>
 
-  abstract sumDespesaValues(id: string): Promise<number | null>
+  abstract sumDespesaValues(id: string, status?: string): Promise<number | null>
   abstract save(data: Despesas): Promise<void>
   abstract delete(data: Despesas): Promise<void>
 }

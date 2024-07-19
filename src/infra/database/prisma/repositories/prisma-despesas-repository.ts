@@ -5,6 +5,11 @@ import { DespesasRepository } from 'src/domain/repositories/despesas-repository'
 import { Despesas } from 'src/domain/entities/despesas'
 import { PrismaDespesasMapper } from '../mappers/prisma-despesas-mapper'
 
+interface WhereClause {
+  userId: string
+  status?: string
+}
+
 @Injectable()
 export class PrismaDespesasRepository implements DespesasRepository {
   constructor(private prisma: PrismaService) {}
@@ -67,8 +72,13 @@ export class PrismaDespesasRepository implements DespesasRepository {
     return despesas.map(PrismaDespesasMapper.toDomain)
   }
 
-  async sumDespesaValues(userId: string): Promise<number> {
-    const despesa = await this.prisma.despesas.findMany({ where: { userId } })
+  async sumDespesaValues(userId: string, status?: string): Promise<number> {
+    const whereClause: WhereClause = { userId }
+    if (status) {
+      whereClause.status = status
+    }
+
+    const despesa = await this.prisma.despesas.findMany({ where: whereClause })
     const totalSum = despesa.reduce((sum, despesa) => {
       const valorNumeric = Number(despesa.valor)
       return sum + valorNumeric

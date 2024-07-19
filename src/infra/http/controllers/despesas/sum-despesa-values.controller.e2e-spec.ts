@@ -38,21 +38,34 @@ describe('Fetch total values despesa (E2E)', () => {
         name: 'Salario',
         valor: 1200.0,
         userId: user.id,
+        status: 'pendente',
       }),
       despesaFactory.makePrismaDespesa({
         name: 'FreeLancer',
         valor: 1200.0,
         userId: user.id,
+        status: 'pago',
       }),
     ])
 
-    const response = await request(app.getHttpServer())
+    // Teste sem passar status
+    let response = await request(app.getHttpServer())
       .get(`/despesa/sum/${user.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
     expect(response.body.totalSum.value).toEqual({
       despesa: 2400,
+    })
+
+    // Teste passando status
+    response = await request(app.getHttpServer())
+      .get(`/despesa/sum/${user.id}?status=pendente`)
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send()
+
+    expect(response.body.totalSum.value).toEqual({
+      despesa: 1200,
     })
   })
 })

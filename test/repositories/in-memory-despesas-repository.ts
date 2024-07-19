@@ -44,13 +44,17 @@ export class InMemoryDespesasRepository implements DespesasRepository {
     return despesa
   }
 
-  async sumDespesaValues(userId: string): Promise<number> {
-    const rendas = this.items.filter(
+  async sumDespesaValues(userId: string, status?: string): Promise<number> {
+    let despesas = this.items.filter(
       (item) => item.userId.toString() === userId,
     )
 
-    const totalSum = rendas.reduce((sum, renda) => {
-      return new Decimal(sum).add(renda.valor).toNumber()
+    if (status) {
+      despesas = despesas.filter((item) => item.status === status)
+    }
+
+    const totalSum = despesas.reduce((sum, despesa) => {
+      return new Decimal(sum).add(despesa.valor).toNumber()
     }, 0)
 
     return totalSum
