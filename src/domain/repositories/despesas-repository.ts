@@ -10,6 +10,7 @@ export abstract class DespesasRepository {
     id: string,
     name?: string,
     status?: string,
+    categoriaId?: string,
   ): Promise<Despesas[]>
 
   abstract sumDespesaValues(id: string, status?: string): Promise<number | null>

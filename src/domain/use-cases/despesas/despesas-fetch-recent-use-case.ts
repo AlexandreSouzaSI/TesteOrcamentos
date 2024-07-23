@@ -7,6 +7,7 @@ interface FetchRecentDespesasUseCaseRequest {
   userId: string
   pageIndex: number
   name?: string
+  categoriaId?: string
   status?: string
 }
 
@@ -17,8 +18,11 @@ type FetchRecentDespesasUseCaseResponse = Either<
       id: UniqueEntityId
       name: string
       data?: string | null
-      valor: number
-      status: string
+      valor?: number | null
+      status?: string | null
+      quantidade?: number | null
+      valorUnitario?: number | null
+      categoriaId?: string | null
       dataVencimento?: string | null
       createdAt: Date
       updatedAt?: Date | null

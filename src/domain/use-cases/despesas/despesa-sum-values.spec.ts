@@ -19,6 +19,8 @@ describe('Fetch a value total despesa', () => {
           userId: new UniqueEntityId('despesa-1'),
           createdAt: new Date(),
           valor: 100,
+          quantidade: 0,
+          valorUnitario: 0,
         }),
       )
     }
@@ -37,6 +39,8 @@ describe('Fetch a value total despesa', () => {
           userId: new UniqueEntityId('despesa-2'),
           createdAt: new Date(),
           valor: 100,
+          quantidade: 0,
+          valorUnitario: 0,
           status: 'pendente',
         }),
       )
@@ -48,6 +52,8 @@ describe('Fetch a value total despesa', () => {
           userId: new UniqueEntityId('despesa-2'),
           createdAt: new Date(),
           valor: 200,
+          quantidade: 0,
+          valorUnitario: 0,
           status: 'pago',
         }),
       )
@@ -68,6 +74,8 @@ describe('Fetch a value total despesa', () => {
           userId: new UniqueEntityId('despesa-3'),
           createdAt: new Date(),
           valor: 100,
+          quantidade: 0,
+          valorUnitario: 0,
           status: 'pendente',
         }),
       )
@@ -79,6 +87,8 @@ describe('Fetch a value total despesa', () => {
           userId: new UniqueEntityId('despesa-3'),
           createdAt: new Date(),
           valor: 200,
+          quantidade: 0,
+          valorUnitario: 0,
           status: 'pago',
         }),
       )

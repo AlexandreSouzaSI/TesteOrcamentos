@@ -15,7 +15,9 @@ export class PrismaDespesasRepository implements DespesasRepository {
   constructor(private prisma: PrismaService) {}
 
   async create(despesa: Despesas) {
+    console.log('Despesa: ', despesa)
     const data = PrismaDespesasMapper.toPrisma(despesa)
+    console.log('Data: ', data)
 
     await this.prisma.despesas.create({
       data,
@@ -55,6 +57,7 @@ export class PrismaDespesasRepository implements DespesasRepository {
     id: string,
     name?: string,
     status?: string,
+    categoriaId?: string,
   ) {
     const despesas = await this.prisma.despesas.findMany({
       orderBy: {
@@ -66,6 +69,7 @@ export class PrismaDespesasRepository implements DespesasRepository {
         userId: id,
         ...(name && { name: { contains: name } }),
         ...(status && { status }),
+        ...(categoriaId && { categoriaId }),
       },
     })
 

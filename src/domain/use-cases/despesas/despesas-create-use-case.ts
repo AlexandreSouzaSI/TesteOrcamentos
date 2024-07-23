@@ -8,9 +8,12 @@ interface CreateDespesasUseCaseRequest {
   userId: UniqueEntityId
   name: string
   data?: string | null
-  status: string
-  valor: number
-  dataVencimento: string
+  status?: string | null
+  valor?: number | null
+  quantidade?: number | null
+  valorUnitario?: number | null
+  categoriaId?: string | null
+  dataVencimento?: string | null
 }
 
 type CreateDespesasUseCaseResponse = Either<
@@ -29,6 +32,9 @@ export class CreateDespesasUseCase {
     data,
     valor,
     status,
+    quantidade,
+    valorUnitario,
+    categoriaId,
     dataVencimento,
     userId,
   }: CreateDespesasUseCaseRequest): Promise<CreateDespesasUseCaseResponse> {
@@ -38,6 +44,9 @@ export class CreateDespesasUseCase {
       status,
       data,
       valor,
+      quantidade,
+      valorUnitario,
+      categoriaId,
       dataVencimento,
     })
 

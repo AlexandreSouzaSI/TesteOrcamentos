@@ -41,6 +41,26 @@ import { DifferenceUseCase } from 'src/domain/use-cases/users/user-difference-us
 import { DifferenceController } from './controllers/users/difference.controller'
 import { SumDespesaController } from './controllers/despesas/sum-despesa-values.controller'
 import { SumRendaController } from './controllers/rendas/sum-renda-values.controller'
+import { CreateCategoriaController } from './controllers/categoria/create-categoria.controller'
+import { CreateCategoriaUseCase } from '@src/domain/use-cases/categorias/categoria-create-use-case'
+import { DeleteCategoriaController } from './controllers/categoria/delete-categoria.controller'
+import { EditCategoriaController } from './controllers/categoria/edit-categoria.controller'
+import { FetchCategoriaController } from './controllers/categoria/fetch-categoria.controller'
+import { DeleteCategoriaUseCase } from '@src/domain/use-cases/categorias/categoria-delete-use-case'
+import { EditCategoriaUseCase } from '@src/domain/use-cases/categorias/categoria-edit-use-case'
+import { FetchCategoriaUseCase } from '@src/domain/use-cases/categorias/categoria-fetch-use-case'
+import { CreateProdutoController } from './controllers/produto/create-produto.controller'
+import { CreateProdutoUseCase } from '@src/domain/use-cases/produtos/produto-create-use-case'
+import { DeleteProdutoController } from './controllers/produto/delete-produto.controller'
+import { DeleteProdutoUseCase } from '@src/domain/use-cases/produtos/produto-delete-use-case'
+import { EditProdutoController } from './controllers/produto/edit-produto.controller'
+import { EditProdutoUseCase } from '@src/domain/use-cases/produtos/produto-edit-use-case'
+import { FetchProdutoController } from './controllers/produto/fetch-produto.controller'
+import { FetchProdutoUseCase } from '@src/domain/use-cases/produtos/produto-fetch-use-case'
+import { GetByNameProdutoUseCase } from '@src/domain/use-cases/produtos/produto-get-by-name-use-case'
+import { GetByNameProdutoController } from './controllers/produto/get-by-name-produto.controller'
+import { GetByNameCategoriaController } from './controllers/categoria/get-by-name-categoria.controller'
+import { GetByNameCategoriaUseCase } from '@src/domain/use-cases/categorias/categoria-get-by-name-use-case'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -64,6 +84,16 @@ import { SumRendaController } from './controllers/rendas/sum-renda-values.contro
     DifferenceController,
     SumDespesaController,
     SumRendaController,
+    CreateCategoriaController,
+    DeleteCategoriaController,
+    EditCategoriaController,
+    FetchCategoriaController,
+    GetByNameCategoriaController,
+    CreateProdutoController,
+    DeleteProdutoController,
+    EditProdutoController,
+    FetchProdutoController,
+    GetByNameProdutoController,
   ],
   providers: [
     PrismaClient,
@@ -87,6 +117,16 @@ import { SumRendaController } from './controllers/rendas/sum-renda-values.contro
     SumRendaUseCase,
     SumDespesaUseCase,
     DifferenceUseCase,
+    CreateCategoriaUseCase,
+    DeleteCategoriaUseCase,
+    EditCategoriaUseCase,
+    FetchCategoriaUseCase,
+    GetByNameCategoriaUseCase,
+    CreateProdutoUseCase,
+    DeleteProdutoUseCase,
+    EditProdutoUseCase,
+    FetchProdutoUseCase,
+    GetByNameProdutoUseCase,
   ],
 })
 export class HttpModule {}

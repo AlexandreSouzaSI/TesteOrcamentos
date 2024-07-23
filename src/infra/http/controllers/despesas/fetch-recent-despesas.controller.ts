@@ -17,12 +17,14 @@ const pageQueryParamSchema = z
 
 const nameQueryParamSchema = z.string().optional()
 const statusQueryParamSchema = z.string().optional()
+const categoriaIdQueryParamSchema = z.string().optional()
 
 const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema)
 
 type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>
 type NameQueryParamSchema = z.infer<typeof nameQueryParamSchema>
 type StatusQueryParamSchema = z.infer<typeof statusQueryParamSchema>
+type CategoriaQueryParamSchema = z.infer<typeof categoriaIdQueryParamSchema>
 
 @Controller('/despesas')
 export class FetchRecentDespesasController {
@@ -38,6 +40,7 @@ export class FetchRecentDespesasController {
     pageIndex: PageQueryParamSchema,
     @Query('name') name: NameQueryParamSchema,
     @Query('status') status: StatusQueryParamSchema,
+    @Query('categoriaId') categoriaId: CategoriaQueryParamSchema,
     @CurrentUser() user: UserPayload,
   ) {
     const userId = user.sub
@@ -46,6 +49,7 @@ export class FetchRecentDespesasController {
       userId,
       pageIndex,
       name,
+      categoriaId,
       status,
     })
 
@@ -65,6 +69,10 @@ export class FetchRecentDespesasController {
     const totalCount = countResult.value.despesa
     const totalValue = sumResult.value?.despesa
 
+    console.log('despesa: ', despesa)
+    console.log('totalCount: ', totalCount)
+    console.log('totalValue: ', totalValue)
+
     return right({
       despesas: despesa.map((r) => ({
         id: r.id.toString(),
@@ -72,6 +80,9 @@ export class FetchRecentDespesasController {
         data: r.data,
         valor: r.valor,
         status: r.status,
+        quantidade: r.quantidade,
+        valorUnitario: r.valorUnitario,
+        categoriaId: r.categoriaId,
         dataVencimento: r.dataVencimento,
         createdAt: r.createdAt,
         updatedAt: r.updatedAt,

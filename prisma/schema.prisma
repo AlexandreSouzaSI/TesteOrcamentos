@@ -28,16 +28,46 @@ model Despesas {
   id             String    @id @default(uuid())
   name           String
   data           String?
-  valor          Decimal
+  valor          Decimal?
   dataVencimento String?
-  status         String
+  status         String?
+  quantidade     Decimal?
+  valorUnitario  Decimal?
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime? @updatedAt @map("updated_at")
   userId         String    @map("user_id")
+  categoriaId    String?   @map("categoria_id")
+  produtoId      String?   @map("produto_id")
 
-  user User @relation(fields: [userId], references: [id])
+  user      User       @relation(fields: [userId], references: [id])
+  categoria Categoria? @relation(fields: [categoriaId], references: [id])
+  produto   Produto?   @relation(fields: [produtoId], references: [id])
 
   @@map("despesas")
+}
+
+model Categoria {
+  id       String     @id @default(uuid())
+  name     String
+  Despesas Despesas[]
+  Produto  Produto[]
+
+  @@map("categorias")
+}
+
+model Produto {
+  id                String    @id @default(uuid())
+  name              String
+  quantidadeEstoque Decimal?
+  quantidadeMinima  Decimal?
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime? @updatedAt @map("updated_at")
+  categoriaId       String?
+
+  categoria Categoria? @relation(fields: [categoriaId], references: [id])
+  Despesas  Despesas[]
+
+  @@map("produtos")
 }
 
 model Renda {

@@ -15,9 +15,12 @@ import { z } from 'zod'
 const createDespesasBodySchema = z.object({
   name: z.string(),
   data: z.string().optional(),
-  valor: z.coerce.number(),
-  dataVencimento: z.string(),
-  status: z.string(),
+  valor: z.coerce.number().optional(),
+  quantidade: z.coerce.number().optional(),
+  valorUnitario: z.coerce.number().optional(),
+  categoriaId: z.string().optional(),
+  dataVencimento: z.string().optional(),
+  status: z.string().optional(),
 })
 
 const bodyValidationPipe = new ZodValidationPipe(createDespesasBodySchema)
@@ -34,7 +37,16 @@ export class CreateDespesasController {
     @Body(bodyValidationPipe) body: CreateDespesasBodySchema,
     @CurrentUser() user: UserPayload,
   ) {
-    const { name, data, valor, dataVencimento, status } = body
+    const {
+      name,
+      data,
+      valor,
+      dataVencimento,
+      status,
+      quantidade,
+      valorUnitario,
+      categoriaId,
+    } = body
     const userValidate = user.sub
 
     const result = await this.createDespesas.execute({
@@ -42,7 +54,10 @@ export class CreateDespesasController {
       name,
       valor,
       status,
+      quantidade,
+      valorUnitario,
       data,
+      categoriaId,
       dataVencimento,
     })
 

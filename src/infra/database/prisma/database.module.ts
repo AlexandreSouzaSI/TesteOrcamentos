@@ -6,6 +6,10 @@ import { UserRepository } from 'src/domain/repositories/user-repository'
 import { RendaRepository } from 'src/domain/repositories/renda-repository'
 import { DespesasRepository } from 'src/domain/repositories/despesas-repository'
 import { PrismaDespesasRepository } from './repositories/prisma-despesas-repository'
+import { CategoriaRepository } from '@src/domain/repositories/categoria-repository'
+import { PrismaCategoriaRepository } from './repositories/prisma-categoria-repository'
+import { ProdutoRepository } from '@src/domain/repositories/produto-repository'
+import { PrismaProdutoRepository } from './repositories/prisma-produto-repository'
 
 @Module({
   providers: [
@@ -22,7 +26,22 @@ import { PrismaDespesasRepository } from './repositories/prisma-despesas-reposit
       provide: RendaRepository,
       useClass: PrismaRendaRepository,
     },
+    {
+      provide: CategoriaRepository,
+      useClass: PrismaCategoriaRepository,
+    },
+    {
+      provide: ProdutoRepository,
+      useClass: PrismaProdutoRepository,
+    },
   ],
-  exports: [PrismaService, UserRepository, DespesasRepository, RendaRepository],
+  exports: [
+    PrismaService,
+    UserRepository,
+    DespesasRepository,
+    RendaRepository,
+    CategoriaRepository,
+    ProdutoRepository,
+  ],
 })
 export class DatabaseModule {}

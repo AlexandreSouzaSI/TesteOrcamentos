@@ -17,10 +17,29 @@ describe('create a despesa', () => {
       name: 'conta de luz',
       valor: 100,
       status: 'pago',
+      quantidade: 0,
+      valorUnitario: 0,
+      categoriaId: 'Salgado',
       data: '15/06/2024',
       dataVencimento: '15/06/2024',
     })
 
     expect(despesa.value?.despesa.valor).toEqual(100)
+  })
+
+  it('should be able to create a despesa', async () => {
+    const despesa = await sut.execute({
+      userId: new UniqueEntityId('22'),
+      name: 'conta de luz',
+      valor: null,
+      status: 'pago',
+      quantidade: 10,
+      valorUnitario: 2,
+      categoriaId: 'Salgado',
+      data: '15/06/2024',
+      dataVencimento: '15/06/2024',
+    })
+
+    expect(despesa.value?.despesa.valor).toEqual(20)
   })
 })

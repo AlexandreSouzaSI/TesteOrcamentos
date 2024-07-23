@@ -15,6 +15,8 @@ export function makeDespesa(
       data: faker.date.anytime().toString(),
       valor: faker.number.float(),
       status: faker.lorem.lines(),
+      quantidade: faker.number.float(),
+      valorUnitario: faker.number.float(),
       dataVencimento: faker.date.anytime().toString(),
       userId: new UniqueEntityId(),
       ...override,
