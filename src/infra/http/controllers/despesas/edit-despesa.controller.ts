@@ -19,6 +19,7 @@ const editDespesasBodySchema = z.object({
   valor: z.number().optional(),
   dataVencimento: z.string().optional(),
   status: z.string().optional(),
+  categoriaId: z.string().optional(),
 })
 
 const bodyValidationPipe = new ZodValidationPipe(editDespesasBodySchema)
@@ -36,7 +37,7 @@ export class EditDespesasController {
     @Param('id') despesaId: string,
     @CurrentUser() user: UserPayload,
   ) {
-    const { name, valor, data, dataVencimento, status } = body
+    const { name, valor, data, dataVencimento, status, categoriaId } = body
     const userValidate = user.sub
 
     const result = await this.editDespesas.execute({
@@ -47,6 +48,7 @@ export class EditDespesasController {
       dataVencimento,
       despesaId,
       userId: new UniqueEntityId(userValidate),
+      categoriaId,
     })
 
     if (result.isLeft()) {

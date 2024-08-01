@@ -14,6 +14,7 @@ interface EditDespesasUseCaseRequest {
   status?: string
   dataVencimento?: string | null
   userId: UniqueEntityId
+  categoriaId?: string | null
 }
 
 type EditDespesasUseCaseResponse = Either<
@@ -34,6 +35,7 @@ export class EditDespesasUseCase {
     valor,
     status,
     dataVencimento,
+    categoriaId,
   }: EditDespesasUseCaseRequest): Promise<EditDespesasUseCaseResponse> {
     const despesa = await this.despesasRepository.findById(despesaId)
 
@@ -55,6 +57,10 @@ export class EditDespesasUseCase {
 
     if (dataVencimento) {
       despesa.dataVencimento = dataVencimento
+    }
+
+    if (categoriaId) {
+      despesa.categoriaId = categoriaId
     }
 
     despesa.data = data ?? null
