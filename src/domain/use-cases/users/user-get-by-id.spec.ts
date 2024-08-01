@@ -6,24 +6,20 @@ import { makeUser } from 'test/factories/make-user'
 let inMemoryUserRepository: InMemoryUserRepository
 let sut: FetchUserUseCase
 
-describe('Fetch a user', () => {
+describe('Get by id a user', () => {
   beforeEach(() => {
     inMemoryUserRepository = new InMemoryUserRepository()
     sut = new FetchUserUseCase(inMemoryUserRepository)
   })
 
-  it('should be able to fetch a user', async () => {
-    await inMemoryUserRepository.create(
-      makeUser({}, new UniqueEntityId('user-1')),
-    )
-    await inMemoryUserRepository.create(
-      makeUser({}, new UniqueEntityId('user-1')),
-    )
+  it('should be able to get by id a user', async () => {
     await inMemoryUserRepository.create(
       makeUser({}, new UniqueEntityId('user-1')),
     )
 
-    const user = await sut.execute()
+    const user = await sut.execute({
+      userId: 'user-1',
+    })
 
     expect(user.isRight()).toBe(true)
   })

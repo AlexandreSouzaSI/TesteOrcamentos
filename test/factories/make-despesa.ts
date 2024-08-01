@@ -19,6 +19,7 @@ export function makeDespesa(
       valorUnitario: faker.number.float(),
       dataVencimento: faker.date.anytime().toString(),
       userId: new UniqueEntityId(),
+      produtoId: faker.string.uuid() || null,
       ...override,
     },
     id,

@@ -16,7 +16,8 @@ const createRendaBodySchema = z.object({
   name: z.string(),
   data: z.string().optional(),
   valor: z.coerce.number(),
-  status: z.string(),
+  status: z.string().optional(),
+  categoriaId: z.string().optional(),
 })
 
 const bodyValidationPipe = new ZodValidationPipe(createRendaBodySchema)
@@ -33,7 +34,7 @@ export class CreateRendaController {
     @Body(bodyValidationPipe) body: CreateRendaBodySchema,
     @CurrentUser() user: UserPayload,
   ) {
-    const { name, valor, data, status } = body
+    const { name, valor, data, status, categoriaId } = body
     const userValidate = user.sub
 
     const result = await this.createRenda.execute({
@@ -42,6 +43,7 @@ export class CreateRendaController {
       valor,
       status,
       data,
+      categoriaId,
     })
 
     if (result.isLeft()) {

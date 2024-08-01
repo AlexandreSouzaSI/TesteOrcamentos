@@ -49,8 +49,9 @@ model Despesas {
 model Categoria {
   id       String     @id @default(uuid())
   name     String
-  Despesas Despesas[]
-  Produto  Produto[]
+  despesas Despesas[]
+  produtos Produto[]
+  rendas   Renda[]
 
   @@map("categorias")
 }
@@ -65,22 +66,24 @@ model Produto {
   categoriaId       String?
 
   categoria Categoria? @relation(fields: [categoriaId], references: [id])
-  Despesas  Despesas[]
+  despesas  Despesas[]
 
   @@map("produtos")
 }
 
 model Renda {
-  id        String    @id @default(uuid())
-  name      String
-  data      String?
-  valor     Decimal
-  status    String
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime? @updatedAt @map("updated_at")
-  userId    String    @map("user_id")
+  id          String    @id @default(uuid())
+  name        String
+  data        String?
+  valor       Decimal
+  status      String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime? @updatedAt @map("updated_at")
+  userId      String    @map("user_id")
+  categoriaId String?
 
-  user User @relation(fields: [userId], references: [id])
+  user      User       @relation(fields: [userId], references: [id])
+  categoria Categoria? @relation(fields: [categoriaId], references: [id])
 
   @@map("rendas")
 }

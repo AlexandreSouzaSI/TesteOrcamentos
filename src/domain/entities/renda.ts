@@ -1,15 +1,18 @@
 import { Entity } from '../../core/entities/entity'
 import { UniqueEntityId } from '../../core/entities/unique-entity-id'
 import { Optional } from '../../core/types/optional'
+import { Categoria } from './categoria'
 
 export interface RendaProps {
   name: string
   data?: string | null
   valor: number
-  status: string
+  status?: string | null
   createdAt: Date
   updatedAt?: Date | null
   userId: UniqueEntityId
+  categoriaId?: string | null
+  categoria?: Categoria
 }
 
 export class Renda extends Entity<RendaProps> {
@@ -38,7 +41,15 @@ export class Renda extends Entity<RendaProps> {
   }
 
   get status() {
-    return this.props.status
+    return this.props.status ?? null
+  }
+
+  get categoriaId() {
+    return this.props.categoriaId ?? null
+  }
+
+  get categoria() {
+    return this.props.categoria ?? undefined
   }
 
   private touch() {
@@ -65,8 +76,18 @@ export class Renda extends Entity<RendaProps> {
     this.touch()
   }
 
-  set status(status: string) {
+  set status(status: string | null) {
     this.props.status = status
+    this.touch()
+  }
+
+  set categoriaId(categoriaId: string | null) {
+    this.props.categoriaId = categoriaId
+    this.touch()
+  }
+
+  set categoria(categoria: Categoria | undefined) {
+    this.props.categoria = categoria
     this.touch()
   }
 
@@ -79,6 +100,8 @@ export class Renda extends Entity<RendaProps> {
         ...props,
         createdAt: props.createdAt ?? new Date(),
         status: props.status ? props.status : 'pendente',
+        categoriaId: props.categoriaId ? props.categoriaId : null,
+        categoria: props.categoria ? props.categoria : undefined,
         data: props.data ?? null,
       },
       id,

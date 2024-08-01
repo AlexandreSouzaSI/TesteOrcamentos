@@ -8,6 +8,17 @@ import { PrismaUserMapper } from '../mappers/prisma-user-mapper'
 export class PrismaUserRepository implements UserRepository {
   constructor(private prisma: PrismaService) {}
 
+  async findMany(): Promise<User[]> {
+    const users = await this.prisma.user.findMany({
+      include: {
+        despesas: true,
+        rendas: true,
+      },
+    })
+
+    return users.map((user) => PrismaUserMapper.toDomain(user))
+  }
+
   async create(user: User) {
     const data = PrismaUserMapper.toPrisma(user)
 
@@ -20,6 +31,10 @@ export class PrismaUserRepository implements UserRepository {
     const user = await this.prisma.user.findUnique({
       where: {
         id,
+      },
+      include: {
+        despesas: true,
+        rendas: true,
       },
     })
 
@@ -34,6 +49,10 @@ export class PrismaUserRepository implements UserRepository {
     const user = await this.prisma.user.findUnique({
       where: {
         email,
+      },
+      include: {
+        despesas: true,
+        rendas: true,
       },
     })
 
@@ -76,12 +95,12 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async delete(user: User) {
-    const data = PrismaUserMapper.toPrisma(user)
+    const userId = user.id.toString()
 
-    await this.prisma.user.delete({
-      where: {
-        id: data.id,
-      },
-    })
+    await this.prisma.$transaction([
+      this.prisma.renda.deleteMany({ where: { userId } }),
+      this.prisma.despesas.deleteMany({ where: { userId } }),
+      this.prisma.user.delete({ where: { id: userId } }),
+    ])
   }
 }

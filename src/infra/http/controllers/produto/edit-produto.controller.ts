@@ -22,7 +22,7 @@ const bodyValidationPipe = new ZodValidationPipe(editProdutoBodySchema)
 
 type EditProdutoBodySchema = z.infer<typeof editProdutoBodySchema>
 
-@Controller('/product/:id')
+@Controller('/produtos/:id')
 export class EditProdutoController {
   constructor(private editProduto: EditProdutoUseCase) {}
 

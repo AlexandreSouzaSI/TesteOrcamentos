@@ -9,8 +9,9 @@ interface CreateRendaUseCaseRequest {
   userId: UniqueEntityId
   name: string
   data?: string | null
-  status: string
+  status?: string | null
   valor: number
+  categoriaId?: string | null
 }
 
 type CreateRensaUseCaseResponse = Either<
@@ -30,6 +31,7 @@ export class CreateRendaUseCase {
     status,
     data,
     userId,
+    categoriaId,
   }: CreateRendaUseCaseRequest): Promise<CreateRensaUseCaseResponse> {
     const renda = Renda.create({
       name,
@@ -37,6 +39,7 @@ export class CreateRendaUseCase {
       status,
       valor,
       data,
+      categoriaId,
     })
 
     await this.rendaRepository.create(renda)

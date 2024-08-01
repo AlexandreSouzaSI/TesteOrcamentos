@@ -46,8 +46,6 @@ describe('Get by name produto (E2E)', () => {
         name: 'Salgados',
       })
 
-    console.log('teste: ', response.body)
-
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual({
       produto: expect.objectContaining({ name: 'Salgados' }),

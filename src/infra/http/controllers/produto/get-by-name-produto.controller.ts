@@ -12,7 +12,7 @@ const bodyValidationPipe = new ZodValidationPipe(getByNameBoySchema)
 
 type GetByNameBoySchema = z.infer<typeof getByNameBoySchema>
 
-@Controller('/productName/')
+@Controller('/produtosName/')
 export class GetByNameProdutoController {
   constructor(private getByNameProduto: GetByNameProdutoUseCase) {}
 

@@ -12,6 +12,7 @@ export class DespesasPresenter {
       createdAt: despesa.createdAt,
       updatedAt: despesa.updatedAt,
       userId: despesa.userId.toString(),
+      categoria: despesa.categoria,
     }
   }
 }

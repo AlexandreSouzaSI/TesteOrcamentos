@@ -5,48 +5,50 @@ import { AppModule } from '../../../app.module'
 import request from 'supertest'
 import { UserFactory } from 'test/factories/make-user'
 import { DatabaseModule } from 'src/infra/database/prisma/database.module'
-import { ProdutoFactory } from '@test/factories/make-produto'
+import { CategoriaFactory } from '@test/factories/make-categoria'
 
-describe('Fetch produto (E2E)', () => {
+describe('Get by id categoria (E2E)', () => {
   let app: INestApplication
   let jwt: JwtService
   let userFactory: UserFactory
-  let produtoFactory: ProdutoFactory
+  let categoriaFactory: CategoriaFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [UserFactory, ProdutoFactory],
+      providers: [UserFactory, CategoriaFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
 
     jwt = moduleRef.get(JwtService)
     userFactory = moduleRef.get(UserFactory)
-    produtoFactory = moduleRef.get(ProdutoFactory)
+    categoriaFactory = moduleRef.get(CategoriaFactory)
 
     await app.init()
   })
 
-  test('[GET] /product', async () => {
+  test('[GET] /categoryName', async () => {
     const user = await userFactory.makePrismaUser({
       name: 'Alexandre Teste',
     })
 
-    await produtoFactory.makePrismaProduto({
+    const categoria = await categoriaFactory.makePrismaCategoria({
       name: 'Salgados',
     })
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const response = await request(app.getHttpServer())
-      .get(`/product`)
+      .get(`/category/${categoria.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
-      .send()
+      .send({
+        name: 'Salgados',
+      })
 
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual({
-      produto: expect.objectContaining({ name: 'Salgados' }),
+      categoria: expect.objectContaining({ name: 'Salgados' }),
     })
   })
 })

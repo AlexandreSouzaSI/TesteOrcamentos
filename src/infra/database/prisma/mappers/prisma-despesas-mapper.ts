@@ -1,9 +1,20 @@
-import { Despesas as PrismaDespesas, Prisma } from '@prisma/client'
+import {
+  Despesas as PrismaDespesas,
+  Categoria as PrismaCategoria,
+  Prisma,
+} from '@prisma/client'
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 import { Despesas } from 'src/domain/entities/despesas'
+import { PrismaCategoriaMapper } from './prisma-categoria-mapper'
 
 export class PrismaDespesasMapper {
-  static toDomain(raw: PrismaDespesas): Despesas {
+  static toDomain(
+    raw: PrismaDespesas & { categoria?: PrismaCategoria | null }, // Ajustado para ser um único objeto ou null
+  ): Despesas {
+    const categoria = raw.categoria
+      ? PrismaCategoriaMapper.toDomain(raw.categoria)
+      : null
+
     return Despesas.create(
       {
         name: raw.name,
@@ -14,9 +25,11 @@ export class PrismaDespesasMapper {
         valorUnitario: raw.valorUnitario?.toNumber(),
         categoriaId: raw.categoriaId ? raw.categoriaId : null,
         userId: new UniqueEntityId(raw.userId),
+        produtoId: raw.produtoId ? raw.produtoId : null,
         dataVencimento: raw.dataVencimento,
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
+        categoria: categoria ?? undefined,
       },
       new UniqueEntityId(raw.id),
     )
@@ -32,6 +45,7 @@ export class PrismaDespesasMapper {
       quantidade: despesa.quantidade,
       valorUnitario: despesa.valorUnitario,
       categoriaId: despesa.categoriaId?.toString() ?? null,
+      produtoId: despesa.produtoId?.toString() ?? null,
       userId: despesa.userId.toString(),
       dataVencimento: despesa.dataVencimento,
       createdAt: despesa.createdAt,

@@ -1,18 +1,26 @@
+import { UniqueEntityId } from '@src/core/entities/unique-entity-id'
 import { right } from './../../../core/either'
 import { Injectable } from '@nestjs/common'
-import { Categoria } from '@src/domain/entities/categoria'
 import { CategoriaRepository } from '@src/domain/repositories/categoria-repository'
-import { Either, left } from 'src/core/either'
-import { ResourceNotFoundError } from 'src/core/errors/errors/resource-not-found-error'
+import { Either } from 'src/core/either'
 
-interface FetchCategoriaUseCaseRequest {
-  categoriaId: string
+interface FetchRecentCategoriaUseCaseRequest {
+  pageIndex: number
+  name?: string
 }
 
 type FetchCategoriaUseCaseResponse = Either<
-  ResourceNotFoundError,
+  null,
   {
-    categoria: Categoria
+    categoria: {
+      id: UniqueEntityId
+      name: string
+    }[]
+    meta: {
+      pageIndex: number
+      perPage: number
+      totalCount: number | null
+    }
   }
 >
 
@@ -21,14 +29,16 @@ export class FetchCategoriaUseCase {
   constructor(private categoriaRepository: CategoriaRepository) {}
 
   async execute({
-    categoriaId,
-  }: FetchCategoriaUseCaseRequest): Promise<FetchCategoriaUseCaseResponse> {
-    const categoria = await this.categoriaRepository.findById(categoriaId)
+    pageIndex,
+    name,
+  }: FetchRecentCategoriaUseCaseRequest): Promise<FetchCategoriaUseCaseResponse> {
+    const categoria = await this.categoriaRepository.findMany(
+      { pageIndex },
+      name,
+    )
 
-    if (!categoria) {
-      return left(new ResourceNotFoundError())
-    }
+    const totalCount = categoria.length
 
-    return right({ categoria })
+    return right({ categoria, meta: { pageIndex, perPage: 10, totalCount } })
   }
 }

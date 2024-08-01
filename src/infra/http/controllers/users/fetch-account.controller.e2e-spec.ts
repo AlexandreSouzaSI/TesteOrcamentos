@@ -32,16 +32,22 @@ describe('Fetch accounts (E2E)', () => {
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
-    const userId = user.id
-
     const response = await request(app.getHttpServer())
-      .get(`/accounts/${userId}`)
+      .get(`/accounts`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual({
-      user: expect.objectContaining({ name: 'Alexandre Teste' }),
+      value: {
+        users: expect.arrayContaining([
+          expect.objectContaining({
+            props: expect.objectContaining({
+              name: 'Alexandre Teste',
+            }),
+          }),
+        ]),
+      },
     })
   })
 })

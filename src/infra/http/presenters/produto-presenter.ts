@@ -8,6 +8,15 @@ export class ProdutoPresenter {
       quantidadeMinima: produto.quantidadeMinima,
       quantidadeEstoque: produto.quantidadeEstoque,
       categoriaId: produto.categoriaId,
+      categoria: produto.categoria,
+    }
+  }
+
+  static formatResponse(produtos: Produto | Produto[]) {
+    if (Array.isArray(produtos)) {
+      return produtos.map((produto) => this.toHTTP(produto))
+    } else {
+      return this.toHTTP(produtos)
     }
   }
 }

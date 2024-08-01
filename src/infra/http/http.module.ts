@@ -11,7 +11,6 @@ import { CreateDespesasController } from './controllers/despesas/create-despesas
 import { CreateDespesasUseCase } from 'src/domain/use-cases/despesas/despesas-create-use-case'
 import { FetchRecentDespesasUseCase } from 'src/domain/use-cases/despesas/despesas-fetch-recent-use-case'
 import { FetchUserUseCase } from 'src/domain/use-cases/users/user-fetch-use-case'
-import { FetchAccountController } from './controllers/users/fetch-account.controller'
 import { EditAccountController } from './controllers/users/edit-account.controller'
 import { EditUserUseCase } from 'src/domain/use-cases/users/user-edit-use-case'
 import { DeleteUserUseCase } from 'src/domain/use-cases/users/user-delete-use-case'
@@ -61,6 +60,13 @@ import { GetByNameProdutoUseCase } from '@src/domain/use-cases/produtos/produto-
 import { GetByNameProdutoController } from './controllers/produto/get-by-name-produto.controller'
 import { GetByNameCategoriaController } from './controllers/categoria/get-by-name-categoria.controller'
 import { GetByNameCategoriaUseCase } from '@src/domain/use-cases/categorias/categoria-get-by-name-use-case'
+import { GetByIdAccountController } from './controllers/users/get-by-id-account.controller'
+import { GetByIdUserUseCase } from '@src/domain/use-cases/users/user-get-by-id-use-case'
+import { FetchAccountController } from './controllers/users/fetch-account.controller'
+import { GetByIdCategoriaController } from './controllers/categoria/get-by-id-categoria.controller'
+import { GetByIdCategoriaUseCase } from '@src/domain/use-cases/categorias/categoria-get-by-id-use-case'
+import { GetByIdProdutoUseCase } from '@src/domain/use-cases/produtos/produto-get-by-id-use-case'
+import { GetByIdProdutoController } from './controllers/produto/get-by-id-produto.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -94,6 +100,9 @@ import { GetByNameCategoriaUseCase } from '@src/domain/use-cases/categorias/cate
     EditProdutoController,
     FetchProdutoController,
     GetByNameProdutoController,
+    GetByIdAccountController,
+    GetByIdCategoriaController,
+    GetByIdProdutoController,
   ],
   providers: [
     PrismaClient,
@@ -127,6 +136,9 @@ import { GetByNameCategoriaUseCase } from '@src/domain/use-cases/categorias/cate
     EditProdutoUseCase,
     FetchProdutoUseCase,
     GetByNameProdutoUseCase,
+    GetByIdUserUseCase,
+    GetByIdCategoriaUseCase,
+    GetByIdProdutoUseCase,
   ],
 })
 export class HttpModule {}

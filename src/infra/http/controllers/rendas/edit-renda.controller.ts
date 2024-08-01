@@ -18,6 +18,7 @@ const editRendaBodySchema = z.object({
   data: z.string().optional(),
   valor: z.coerce.number().optional(),
   status: z.string().optional(),
+  categoriaId: z.string().optional(),
 })
 
 const bodyValidationPipe = new ZodValidationPipe(editRendaBodySchema)
@@ -35,7 +36,7 @@ export class EditRendaController {
     @Param('rendaId') rendaId: string,
     @CurrentUser() user: UserPayload,
   ) {
-    const { name, valor, data, status } = body
+    const { name, valor, data, status, categoriaId } = body
     const userValidate = user.sub
 
     const result = await this.editRenda.execute({
@@ -45,6 +46,7 @@ export class EditRendaController {
       status,
       rendaId,
       userId: new UniqueEntityId(userValidate),
+      categoriaId,
     })
 
     if (result.isLeft()) {

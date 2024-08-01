@@ -2,12 +2,14 @@ import { Injectable } from '@nestjs/common'
 import { RendaRepository } from '../../repositories/renda-repository'
 import { Either, right } from 'src/core/either'
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
+import { Categoria } from '@src/domain/entities/categoria'
 
 interface FetchRecentRendaUseCaseRequest {
   userId: string
   pageIndex: number
   name?: string
   status?: string
+  categoriaId?: string
 }
 
 type FetchRecentRendaUseCaseResponse = Either<
@@ -18,10 +20,12 @@ type FetchRecentRendaUseCaseResponse = Either<
       name: string
       data?: string | null
       valor: number
-      status: string
+      status?: string | null
       createdAt: Date
       updatedAt?: Date | null
       userId: UniqueEntityId
+      categoriaId?: string | null
+      categoria?: Categoria | null
     }[]
     meta: {
       pageIndex: number
@@ -40,12 +44,14 @@ export class FetchRecentRendaUseCase {
     userId,
     pageIndex,
     name,
+    categoriaId,
     status,
   }: FetchRecentRendaUseCaseRequest): Promise<FetchRecentRendaUseCaseResponse> {
     const renda = await this.rendaRepository.findManyRecent(
       { pageIndex },
       userId,
       name,
+      categoriaId,
       status,
     )
 

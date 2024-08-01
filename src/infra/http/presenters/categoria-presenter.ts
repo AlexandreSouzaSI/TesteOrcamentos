@@ -7,4 +7,8 @@ export class CategoriaPresenter {
       name: categoria.name,
     }
   }
+
+  static formatResponse(categorias: Categoria[]) {
+    return categorias.map(CategoriaPresenter.toHTTP)
+  }
 }

@@ -1,18 +1,35 @@
+import { UniqueEntityId } from '@src/core/entities/unique-entity-id'
 import { right } from './../../../core/either'
 import { Injectable } from '@nestjs/common'
-import { Produto } from '@src/domain/entities/produto'
 import { ProdutoRepository } from '@src/domain/repositories/produto-repository'
-import { Either, left } from 'src/core/either'
-import { ResourceNotFoundError } from 'src/core/errors/errors/resource-not-found-error'
+import { Either } from 'src/core/either'
+import { Categoria } from '@src/domain/entities/categoria'
 
-interface FetchProdutoUseCaseRequest {
-  produtoId: string
+interface FetchRecentProdutosUseCaseRequest {
+  produtoId?: string
+  pageIndex: number
+  name?: string
+  categoriaId?: string
 }
 
-type FetchProdutoUseCaseResponse = Either<
-  ResourceNotFoundError,
+type FetchRecentProdutosUseCaseResponse = Either<
+  null,
   {
-    produto: Produto
+    produto: {
+      id: UniqueEntityId
+      name: string
+      quantidadeEstoque?: number | null
+      quantidadeMinima?: number | null
+      categoriaId?: string | null
+      createdAt: Date
+      updatedAt?: Date | null
+      categoria?: Categoria | null
+    }[]
+    meta: {
+      pageIndex: number
+      perPage: number
+      totalCount: number | null
+    }
   }
 >
 
@@ -21,14 +38,21 @@ export class FetchProdutoUseCase {
   constructor(private produtoRepository: ProdutoRepository) {}
 
   async execute({
-    produtoId,
-  }: FetchProdutoUseCaseRequest): Promise<FetchProdutoUseCaseResponse> {
-    const produto = await this.produtoRepository.findById(produtoId)
+    pageIndex,
+    name,
+    categoriaId,
+  }: FetchRecentProdutosUseCaseRequest): Promise<FetchRecentProdutosUseCaseResponse> {
+    const produtos = await this.produtoRepository.findMany(
+      { pageIndex },
+      name ?? '',
+      categoriaId,
+    )
 
-    if (!produto) {
-      return left(new ResourceNotFoundError())
-    }
+    const totalCount = produtos.length
 
-    return right({ produto })
+    return right({
+      produto: produtos,
+      meta: { pageIndex, perPage: 10, totalCount },
+    })
   }
 }

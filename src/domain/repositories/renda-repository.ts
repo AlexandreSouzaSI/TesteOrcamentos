@@ -10,6 +10,7 @@ export abstract class RendaRepository {
     id: string,
     name?: string,
     status?: string,
+    categoriaId?: string,
   ): Promise<Renda[]>
 
   abstract sumRendaValues(id: string): Promise<number | null>

@@ -22,7 +22,7 @@ const createProdutoBodySchema = z.object({
 
 type CreateProdutoBodySchema = z.infer<typeof createProdutoBodySchema>
 
-@Controller('/product')
+@Controller('/produtos')
 @Public()
 export class CreateProdutoController {
   constructor(private createProduto: CreateProdutoUseCase) {}

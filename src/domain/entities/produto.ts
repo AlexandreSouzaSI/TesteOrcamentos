@@ -1,6 +1,7 @@
 import { Optional } from '@src/core/types/optional'
 import { Entity } from '../../core/entities/entity'
 import { UniqueEntityId } from '../../core/entities/unique-entity-id'
+import { Categoria } from './categoria'
 
 export interface ProdutoProps {
   name: string
@@ -9,6 +10,7 @@ export interface ProdutoProps {
   categoriaId?: string | null
   createdAt: Date
   updatedAt?: Date | null
+  categoria?: Categoria
 }
 
 export class Produto extends Entity<ProdutoProps> {
@@ -36,6 +38,10 @@ export class Produto extends Entity<ProdutoProps> {
     return this.props.updatedAt
   }
 
+  get categoria() {
+    return this.props.categoria ?? undefined
+  }
+
   private touch() {
     this.props.updatedAt = new Date()
   }
@@ -60,6 +66,11 @@ export class Produto extends Entity<ProdutoProps> {
     this.touch()
   }
 
+  set categoria(categoria: Categoria | undefined) {
+    this.props.categoria = categoria
+    this.touch()
+  }
+
   static create(
     props: Optional<ProdutoProps, 'createdAt'>,
     id?: UniqueEntityId,
@@ -68,6 +79,7 @@ export class Produto extends Entity<ProdutoProps> {
       {
         ...props,
         createdAt: props.createdAt ?? new Date(),
+        categoria: props.categoria ? props.categoria : undefined,
       },
       id,
     )

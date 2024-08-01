@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma.service'
 import { PrismaCategoriaMapper } from '../mappers/prisma-categoria-mapper'
 import { Categoria } from '@src/domain/entities/categoria'
 import { CategoriaRepository } from '@src/domain/repositories/categoria-repository'
+import { PaginationParams } from '@src/core/repositories/pagination-params'
 
 @Injectable()
 export class PrismaCategoriaRepository implements CategoriaRepository {
@@ -21,6 +22,11 @@ export class PrismaCategoriaRepository implements CategoriaRepository {
       where: {
         id,
       },
+      include: {
+        despesas: true,
+        produtos: true,
+        rendas: true,
+      },
     })
 
     if (!categoria) {
@@ -35,6 +41,11 @@ export class PrismaCategoriaRepository implements CategoriaRepository {
       where: {
         name,
       },
+      include: {
+        despesas: true,
+        produtos: true,
+        rendas: true,
+      },
     })
 
     if (!categoria) {
@@ -42,6 +53,20 @@ export class PrismaCategoriaRepository implements CategoriaRepository {
     }
 
     return PrismaCategoriaMapper.toDomain(categoria)
+  }
+
+  async findMany({ pageIndex }: PaginationParams, name?: string) {
+    const categoria = await this.prisma.categoria.findMany({
+      take: 10,
+      skip: (pageIndex - 1) * 10,
+      where: {
+        ...(name && { name: { contains: name, mode: 'insensitive' } }),
+      },
+    })
+
+    return categoria.map((categoria) =>
+      PrismaCategoriaMapper.toDomain(categoria),
+    )
   }
 
   async save(categoria: Categoria) {

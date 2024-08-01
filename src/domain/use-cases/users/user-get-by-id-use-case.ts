@@ -5,24 +5,30 @@ import { Either, left } from 'src/core/either'
 import { ResourceNotFoundError } from 'src/core/errors/errors/resource-not-found-error'
 import { User } from 'src/domain/entities/user'
 
-type FetchUserUseCaseResponse = Either<
+interface GetByIdUserUseCaseRequest {
+  userId: string
+}
+
+type GetByIdUserUseCaseResponse = Either<
   ResourceNotFoundError,
   {
-    users: User[]
+    user: User
   }
 >
 
 @Injectable()
-export class FetchUserUseCase {
+export class GetByIdUserUseCase {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(): Promise<FetchUserUseCaseResponse> {
-    const users = await this.userRepository.findMany()
+  async execute({
+    userId,
+  }: GetByIdUserUseCaseRequest): Promise<GetByIdUserUseCaseResponse> {
+    const user = await this.userRepository.findById(userId)
 
-    if (!users) {
+    if (!user) {
       return left(new ResourceNotFoundError())
     }
 
-    return right({ users })
+    return right({ user })
   }
 }

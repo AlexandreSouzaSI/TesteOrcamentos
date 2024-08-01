@@ -14,6 +14,7 @@ interface CreateDespesasUseCaseRequest {
   valorUnitario?: number | null
   categoriaId?: string | null
   dataVencimento?: string | null
+  produtoId?: string | null
 }
 
 type CreateDespesasUseCaseResponse = Either<
@@ -37,6 +38,7 @@ export class CreateDespesasUseCase {
     categoriaId,
     dataVencimento,
     userId,
+    produtoId,
   }: CreateDespesasUseCaseRequest): Promise<CreateDespesasUseCaseResponse> {
     const despesa = Despesas.create({
       userId,
@@ -48,6 +50,7 @@ export class CreateDespesasUseCase {
       valorUnitario,
       categoriaId,
       dataVencimento,
+      produtoId,
     })
 
     await this.despesaRepository.create(despesa)

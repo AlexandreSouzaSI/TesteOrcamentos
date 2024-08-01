@@ -69,10 +69,6 @@ export class FetchRecentDespesasController {
     const totalCount = countResult.value.despesa
     const totalValue = sumResult.value?.despesa
 
-    console.log('despesa: ', despesa)
-    console.log('totalCount: ', totalCount)
-    console.log('totalValue: ', totalValue)
-
     return right({
       despesas: despesa.map((r) => ({
         id: r.id.toString(),
@@ -87,6 +83,7 @@ export class FetchRecentDespesasController {
         createdAt: r.createdAt,
         updatedAt: r.updatedAt,
         userId: r.userId.toString(),
+        categoria: r.categoria?.name,
       })),
       meta: {
         pageIndex,

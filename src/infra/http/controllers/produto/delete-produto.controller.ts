@@ -8,7 +8,7 @@ import {
 import { DeleteProdutoUseCase } from '@src/domain/use-cases/produtos/produto-delete-use-case'
 import { right } from 'src/core/either'
 
-@Controller('/product/:id')
+@Controller('/produtos/:id')
 export class DeleteProdutoController {
   constructor(private produtoCategoria: DeleteProdutoUseCase) {}
 

@@ -28,6 +28,10 @@ export class InMemoryProdutoRepository implements ProdutoRepository {
     return produto
   }
 
+  async findMany() {
+    return this.items
+  }
+
   async save(produto: Produto) {
     const itemIndex = this.items.findIndex((item) => item.id === produto.id)
 

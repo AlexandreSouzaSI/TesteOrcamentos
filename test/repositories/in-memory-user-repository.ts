@@ -1,14 +1,19 @@
-import { PrismaService } from '@src/infra/database/prisma/prisma.service'
 import { User } from 'src/domain/entities/user'
 import { UserRepository } from 'src/domain/repositories/user-repository'
+import { Renda } from 'src/domain/entities/renda'
+import { Despesas } from '@src/domain/entities/despesas'
 
 export class InMemoryUserRepository implements UserRepository {
-  constructor(private prisma: PrismaService) {}
-
   public items: User[] = []
+  public rendas: Renda[] = []
+  public despesas: Despesas[] = []
 
   async create(user: User) {
     this.items.push(user)
+  }
+
+  async findMany(): Promise<User[]> {
+    return this.items
   }
 
   async findById(id: string) {
@@ -44,19 +49,13 @@ export class InMemoryUserRepository implements UserRepository {
   }
 
   async difference(id: string) {
-    const rendas = await this.prisma.renda.findMany({ where: { userId: id } })
-    const rendasSum = rendas.reduce(
-      (sum, renda) => sum + Number(renda.valor),
-      0,
-    )
+    const rendasSum = this.rendas
+      .filter((renda) => renda.userId.toString() === id)
+      .reduce((sum, renda) => sum + Number(renda.valor), 0)
 
-    const despesas = await this.prisma.despesas.findMany({
-      where: { userId: id },
-    })
-    const despesasSum = despesas.reduce(
-      (sum, despesa) => sum + Number(despesa.valor),
-      0,
-    )
+    const despesasSum = this.despesas
+      .filter((despesa) => despesa.userId.toString() === id)
+      .reduce((sum, despesa) => sum + Number(despesa.valor), 0)
 
     const difference = rendasSum - despesasSum
 

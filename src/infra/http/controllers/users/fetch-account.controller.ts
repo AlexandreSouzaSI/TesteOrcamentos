@@ -1,31 +1,20 @@
-import { BadRequestException, Controller, Get, Param } from '@nestjs/common'
-import { FetchUserUseCase } from 'src/domain/use-cases/users/user-fetch-use-case'
+import { Controller, Get } from '@nestjs/common'
+import { FetchUserUseCase } from '@src/domain/use-cases/users/user-fetch-use-case'
 import { UserPresenter } from '../../presenters/user-presenter'
 
-@Controller('/accounts/:userId')
+@Controller('/accounts')
 export class FetchAccountController {
-  constructor(private fetchAccount: FetchUserUseCase) {}
+  constructor(private userRepository: FetchUserUseCase) {}
 
   @Get()
-  async handle(@Param('userId') userId: string) {
-    const account = await this.fetchAccount.execute({
-      userId,
-    })
+  async getAllUsers() {
+    const result = await this.userRepository.execute()
 
-    if (!account) {
-      throw new Error()
+    if (result.isLeft()) {
+      return { error: result.value.message }
     }
 
-    if (account.isLeft()) {
-      throw new BadRequestException()
-    }
-
-    const user = account.value.user
-
-    if (!user) {
-      throw new BadRequestException('User not found')
-    }
-
-    return { user: UserPresenter.toHTTP(user) }
+    const users = result.value.users
+    return { users: UserPresenter.formatResponse(users) }
   }
 }

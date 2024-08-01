@@ -8,6 +8,10 @@ export class InMemoryCategoriaRepository implements CategoriaRepository {
     this.items.push(categoria)
   }
 
+  async findMany() {
+    return this.items
+  }
+
   async findById(id: string) {
     const categoria = this.items.find((item) => item.id.toString() === id)
 

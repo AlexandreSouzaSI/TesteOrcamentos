@@ -8,11 +8,12 @@ import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 
 interface EditRendaUseCaseRequest {
   rendaId: string
-  name?: string
+  name?: string | null
   data?: string | null
   valor?: number
   status?: string
   userId: UniqueEntityId
+  categoriaId?: string | null
 }
 
 type EditRensaUseCaseResponse = Either<
@@ -32,6 +33,7 @@ export class EditRendaUseCase {
     data,
     status,
     rendaId,
+    categoriaId,
   }: EditRendaUseCaseRequest): Promise<EditRensaUseCaseResponse> {
     const renda = await this.rendaRepository.findById(rendaId)
 
@@ -49,6 +51,10 @@ export class EditRendaUseCase {
 
     if (status) {
       renda.status = status
+    }
+
+    if (categoriaId) {
+      renda.categoriaId = categoriaId
     }
 
     renda.data = data ?? null

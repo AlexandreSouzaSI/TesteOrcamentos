@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma.service'
 import { Produto } from '@src/domain/entities/produto'
 import { PrismaProdutoMapper } from '../mappers/prisma-produto-mapper'
 import { ProdutoRepository } from '@src/domain/repositories/produto-repository'
+import { PaginationParams } from '@src/core/repositories/pagination-params'
 
 @Injectable()
 export class PrismaProdutoRepository implements ProdutoRepository {
@@ -42,6 +43,29 @@ export class PrismaProdutoRepository implements ProdutoRepository {
     }
 
     return PrismaProdutoMapper.toDomain(produto)
+  }
+
+  async findMany(
+    { pageIndex }: PaginationParams,
+    name?: string,
+    categoriaId?: string,
+  ) {
+    const categoria = await this.prisma.produto.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 10,
+      skip: (pageIndex - 1) * 10,
+      where: {
+        ...(name && { name: { contains: name } }),
+        ...(categoriaId && { categoriaId }),
+      },
+      include: {
+        categoria: true,
+      },
+    })
+
+    return categoria.map(PrismaProdutoMapper.toDomain)
   }
 
   async save(produto: Produto) {

@@ -1,6 +1,7 @@
 import { Entity } from '../../core/entities/entity'
 import { UniqueEntityId } from '../../core/entities/unique-entity-id'
 import { Optional } from '../../core/types/optional'
+import { Categoria } from './categoria'
 
 export interface DespesasProps {
   name: string
@@ -14,6 +15,8 @@ export interface DespesasProps {
   updatedAt?: Date | null
   categoriaId?: string | null
   userId: UniqueEntityId
+  produtoId?: string | null
+  categoria?: Categoria
 }
 
 export class Despesas extends Entity<DespesasProps> {
@@ -61,6 +64,14 @@ export class Despesas extends Entity<DespesasProps> {
     return this.props.categoriaId ?? null
   }
 
+  get produtoId() {
+    return this.props.produtoId ?? null
+  }
+
+  get categoria() {
+    return this.props.categoria ?? undefined
+  }
+
   private touch() {
     this.props.updatedAt = new Date()
   }
@@ -105,6 +116,16 @@ export class Despesas extends Entity<DespesasProps> {
     this.touch()
   }
 
+  set produtoId(produtoId: string | null) {
+    this.props.produtoId = produtoId
+    this.touch()
+  }
+
+  set categoria(categoria: Categoria | undefined) {
+    this.props.categoria = categoria
+    this.touch()
+  }
+
   static create(
     props: Optional<DespesasProps, 'createdAt' | 'status'>,
     id?: UniqueEntityId,
@@ -124,6 +145,8 @@ export class Despesas extends Entity<DespesasProps> {
           status: props.status ? props.status : 'pendente',
           data: props.data ?? null,
           categoriaId: props.categoriaId ? props.categoriaId : null,
+          produtoId: props.produtoId ? props.produtoId : null,
+          categoria: props.categoria ? props.categoria : undefined,
           valor: calculatedValor,
         },
         id,
@@ -139,6 +162,7 @@ export class Despesas extends Entity<DespesasProps> {
         status: props.status ? props.status : 'pendente',
         data: props.data ?? null,
         categoriaId: props.categoriaId ? props.categoriaId : null,
+        categoria: props.categoria ? props.categoria : undefined,
         valor: props.valor,
       },
       id,

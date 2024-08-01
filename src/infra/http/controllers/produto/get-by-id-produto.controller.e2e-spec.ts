@@ -28,19 +28,19 @@ describe('Fetch produto (E2E)', () => {
     await app.init()
   })
 
-  test('[GET] /product', async () => {
+  test('[GET] /product/:id', async () => {
     const user = await userFactory.makePrismaUser({
       name: 'Alexandre Teste',
     })
 
-    await produtoFactory.makePrismaProduto({
+    const produto = await produtoFactory.makePrismaProduto({
       name: 'Salgados',
     })
 
     const accessToken = jwt.sign({ sub: user.id.toString() })
 
     const response = await request(app.getHttpServer())
-      .get(`/product`)
+      .get(`/product/${produto.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
 

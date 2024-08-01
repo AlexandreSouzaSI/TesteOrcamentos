@@ -50,6 +50,7 @@ export class PrismaRendaRepository implements RendaRepository {
     id: string,
     name?: string,
     status?: string,
+    categoriaId?: string,
   ) {
     const renda = await this.prisma.renda.findMany({
       orderBy: {
@@ -61,6 +62,10 @@ export class PrismaRendaRepository implements RendaRepository {
         userId: id,
         ...(name && { name: { contains: name } }),
         ...(status && { status }),
+        ...(categoriaId && { categoriaId }),
+      },
+      include: {
+        categoria: true,
       },
     })
 

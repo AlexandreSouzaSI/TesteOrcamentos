@@ -75,6 +75,8 @@ export class FetchRecentRendaController {
         createdAt: r.createdAt,
         updatedAt: r.updatedAt,
         userId: r.userId.toString(),
+        categoriaId: r.categoriaId,
+        categoria: r.categoria?.name,
       })),
       meta: {
         pageIndex,
